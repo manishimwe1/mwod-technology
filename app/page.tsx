@@ -1,6 +1,4 @@
-import GenerateQrcode from "@/components/GenerateQrcode";
 import { ShowMessage } from "@/components/ShowMessage";
-import Image from "next/image";
 
 export default function Home() {
   return (
