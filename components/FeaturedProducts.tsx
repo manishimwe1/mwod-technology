@@ -14,7 +14,7 @@ export default async function FeaturedProducts() {
   console.log(product,'product');
   if(!product) return null
   return (
-    <section className="py-12 container mx-auto px-6 lg:px-8">
+    <section className="py-6 md:py-12  container mx-auto px-6 lg:px-8">
       <h2 className="text-2xl font-bold mb-6 text-center">Collection Products</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {product.map((item) => (
