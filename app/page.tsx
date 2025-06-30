@@ -19,7 +19,9 @@ export default async function App() {
       <HeroSection heroSection={heroSection} />
       {/* <ProductCategories /> */}
       
+      <section id="products" className="w-full h-full">
       <FeaturedProducts />
+      </section>
       {/* <BestSellers /> */}
       {/* <DealsOfTheDay />
       <BrandsCarousel />

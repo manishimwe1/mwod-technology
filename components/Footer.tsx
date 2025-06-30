@@ -6,14 +6,13 @@ import React from "react";
 export default function Footer() {
   return (
     <footer className="bg-blue-900 text-white py-8">
-      <div className="container mx-auto grid md:grid-cols-3 gap-6 text-center md:text-left">
+      <div className="container mx-auto grid md:grid-cols-3 gap-6 text-center md:text-left justify-center">
         <div>
           <h3 className="font-semibold mb-2">Mosse tech ltd</h3>
           <p className="text-sm">High-quality electronics & great deals.</p>
         </div>
         <div>
-          <h3 className="font-semibold mb-2">Links</h3>
-          <ul className="space-y-1">
+          <ul className="space-y-1 flex flex-col items-center justify-center gap-2">
             {NavLinks.map((link)=>(
               <Link key={link.label} href={link.link}>{link.label}</Link>
             ))}
@@ -29,7 +28,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="text-center mt-4 text-sm text-blue-200">
-        &copy; {new Date().getFullYear()} eCommax. All rights reserved.
+        &copy; {new Date().getFullYear()}. All rights reserved.
       </div>
     </footer>
   );

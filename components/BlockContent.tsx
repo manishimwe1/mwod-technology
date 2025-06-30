@@ -85,8 +85,8 @@ export const BlockContent = ({
 }) => {
   const images = extractImages(content || []);
   return (
-    <div className="flex items-start h-full justify-between gap-10 overflow-x-hidden flex-col">
-      <div className="flex w-full h-full items-center justify-between gap-10">
+    <div className="flex items-start h-full justify-between md:gap-10 overflow-x-hidden flex-col">
+      <div className="flex flex-col md:flex-row w-full h-fit md:h-full items-start md:items-center justify-between gap-4 md:gap-10">
         {images.length > 1 && (
           <div className=" w-full md:w-[60%] flex-shrink-0 h-full ">
             <Carousel className="w-full  mx-auto">
@@ -113,10 +113,10 @@ export const BlockContent = ({
         <div className="w-full md:w-[40%] h-full">
           <div className="flex-1 space-y-4">
             <h1 className="text-xl font-semibold">{title}</h1>
-            <p className="text-2xl font-bold text-gray-800">{price.toLocaleString()} <span className="text-sm font-normal">rwf</span></p>
+            <p className="text-3xl  font-bold text-gray-800 text-end pr-5">{price.toLocaleString()} <span className="text-sm font-normal">rwf</span></p>
 
             {/* Seller info */}
-            <div className="grid grid-cols-2 w-full gap-2">
+            <div className="grid grid-cols-2 w-full gap-2 px-4">
               <CustomerReview />
               <CustomerReview />
             </div>
@@ -126,23 +126,23 @@ export const BlockContent = ({
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4">
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <div className="flex gap-4 w-full">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
                 Write
               </button>
-              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">
                 Call
               </button>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex border w-full px-4 h-full items-center justify-between gap-10">
-        <div className="w-full border ">
+      <div className="flex w-full px-4 h-full items-start justify-between gap-10 mt-10 md:mt-0">
+        <div className="w-full ">
 
         <PortableText components={portableTextComponents} value={content} />
         </div>
-        <div className="w-[30%] h-full">
+        <div className="w-[30%] h-full hidden md:flex">
           <SmilarComponent similar={similar}/>
 
         </div>
