@@ -12,6 +12,10 @@ export const productType = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'price',
+      type: 'number',
+    }),
+    defineField({
       name: 'slug',
       type: 'slug',
       options: {

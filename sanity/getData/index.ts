@@ -20,7 +20,7 @@ export const getHeroSection = async () => {
 export const getProductData = async () => {
   try {
     const data = await client.fetch(
-      groq`*[_type == "product"]|order(_createdAt  desc){_id, title,slug,"imageUrl": mainImage.asset->url,_createdAt,body,description }`,
+      groq`*[_type == "product"]|order(_createdAt  desc){_id, title,slug,price,"imageUrl": mainImage.asset->url,_createdAt,body,description }`,
       {},
       options
     );
@@ -34,7 +34,7 @@ export const getProductData = async () => {
 export const getProductBySlug = async (slug: string) => {
   try {
     const data = await client.fetch(
-      groq`*[_type == "product" && slug.current == $slug][0]{_id, title, slug, "imageUrl": mainImage.asset->url, _createdAt, body, description }`,
+      groq`*[_type == "product" && slug.current == $slug][0]{_id, title, slug,price, "imageUrl": mainImage.asset->url, _createdAt, body, description }`,
       { slug },
       options
     );

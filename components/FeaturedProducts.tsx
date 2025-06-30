@@ -42,7 +42,7 @@ export default async function FeaturedProducts() {
                 {item.title}
               </h3>
               <span className="text-xs text-neutral-600 py-1 line-clamp-2">{item.description}</span>
-              <div className="text-2xl line-clamp-3 font-extrabold py-3 text-end">5000 <span className="text-sm font-normal">rwf</span></div>
+              <div className="text-2xl line-clamp-3 font-extrabold py-3 text-end">{item.price?.toLocaleString()} <span className="text-sm font-normal">rwf</span></div>
              <Button className="bg-[hsl(201,100%,36%)] w-full group-hover:bg-[#0077b6] cursor-pointer">Add to cart</Button>
               </div>
             </CardContent>

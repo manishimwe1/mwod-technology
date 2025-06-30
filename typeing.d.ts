@@ -43,6 +43,7 @@ export interface ProductType {
     _createdAt: string;
     _type: 'product';
     title: string;
+    price: number;
     description: string;
     imageUrl?: string;
     slug: { _type: 'slug'; current: string };

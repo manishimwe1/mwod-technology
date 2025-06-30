@@ -30,6 +30,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             content={product?.body}
             title={product?.title ?? ''}
             description={product?.description ?? ''}
+            price={product?.price ?? 0}
           />
         </div>
       </div>

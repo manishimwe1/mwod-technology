@@ -72,10 +72,12 @@ export const BlockContent = ({
   content,
   title,
   description,
+  price,
 }: {
   content: any;
   title: string;
   description: string;
+  price:number
 }) => {
   const images = extractImages(content || []);
   return (
@@ -107,7 +109,7 @@ export const BlockContent = ({
         <div className="w-full md:w-[40%] h-full">
           <div className="flex-1 space-y-4">
             <h1 className="text-xl font-semibold">{title}</h1>
-            <p className="text-2xl font-bold text-gray-800">Afodable price</p>
+            <p className="text-2xl font-bold text-gray-800">{price.toLocaleString()} <span className="text-sm font-normal">rwf</span></p>
 
             {/* Seller info */}
             <div className="grid grid-cols-2 w-full gap-2">
