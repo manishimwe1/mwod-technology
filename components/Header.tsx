@@ -10,7 +10,7 @@ import { NavLinks } from "@/constants";
 export default function Header() {
   return (
     <header className="bg-[#03045e] text-white w-full">
-      <div className="container mx-auto flex justify-between items-center p-4">
+      <div className="container mx-auto flex justify-between items-center p-4 gap-2">
         <Link href={'/'} className="flex items-center justify-center gap-2">
           <Image src={'/convex.svg'} alt="logo" height={20} width={40} />
           <div className="md:flex items-center justify-center flex-col hidden">
