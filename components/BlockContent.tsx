@@ -8,7 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { ScrollArea } from "./ui/scroll-area";
 import { ProductType } from "@/typeing";
 import SmilarComponent from "./SmilarComponent";
 

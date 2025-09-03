@@ -1,118 +1,89 @@
-"use client";
-import Link from "next/link";
-import React from "react";
-import { AlignRight, Search } from "lucide-react";
-import { Button } from "./ui/button";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { NavLinks } from "@/constants";
+'use client'
+
+import { Search, User, ShoppingBag, Menu } from 'lucide-react'
+import { useState } from 'react'
 
 export default function Header() {
-  return (
-    <header className="bg-[#03045e] text-white w-full">
-      <div className="container mx-auto flex justify-between items-center p-4 gap-2">
-        <Link href={'/'} className="flex items-center justify-center gap-2">
-          <Image src={'/convex.svg'} alt="logo" height={20} width={40} />
-          <div className="md:flex items-center justify-center flex-col hidden">
-          <h1 className="text-xl font-bold">Mosse Tech</h1>
-          <p>LTd</p>
-        </div>
-        </Link>
-        <SearchBox />
-        <div className=" items-center justify-end gap-2 md:gap-4 hidden md:flex">
-          <nav className="hidden md:flex space-x-4">
-            {
-              NavLinks.map((link)=>(
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-            <Link href={link.link} key={link.label} className="hover:text-blue-300 capitalize">
-              Products
-            </Link>
-              ))
-            }
-            
+  return (
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <a href="/" className="text-2xl font-bold text-green-600">
+              ElectroX
+            </a>
+          </div>
+
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <a href="/browse" className="text-gray-700 hover:text-green-600 font-medium">
+              Browse
+            </a>
+            <a href="/sell" className="text-gray-700 hover:text-green-600 font-medium">
+              Sell
+            </a>
+            <a href="/news" className="text-gray-700 hover:text-green-600 font-medium">
+              News
+            </a>
+            <a href="/about" className="text-gray-700 hover:text-green-600 font-medium">
+              About
+            </a>
           </nav>
-          <Button
-            size={"sm"}
-            className="bg-primary-foreground text-primary hover:text-white cursor-pointer transition-all duration-100 hover:bg-stone-900"
-          >
-            Sign in
-          </Button>
+
+          {/* Search */}
+          <div className="hidden md:flex flex-1 max-w-lg mx-8">
+            <div className="relative w-full">
+              <input
+                type="text"
+                placeholder="Search for electronics..."
+                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            </div>
+          </div>
+
+          {/* User Actions */}
+          <div className="flex items-center space-x-4">
+            <button className="p-2 text-gray-700 hover:text-green-600">
+              <User size={24} />
+            </button>
+            <button className="p-2 text-gray-700 hover:text-green-600">
+              <ShoppingBag size={24} />
+            </button>
+            <button 
+              className="md:hidden p-2 text-gray-700"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <Menu size={24} />
+            </button>
+          </div>
         </div>
-          <Button size={'icon'} className="md:hidden cursor-pointer border border-stone-500">
-            <AlignRight />
-          </Button>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 py-4">
+            <div className="space-y-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search for electronics..."
+                  className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              </div>
+              <nav className="space-y-2">
+                <a href="/browse" className="block py-2 text-gray-700 hover:text-green-600">Browse</a>
+                <a href="/sell" className="block py-2 text-gray-700 hover:text-green-600">Sell</a>
+                <a href="/news" className="block py-2 text-gray-700 hover:text-green-600">News</a>
+                <a href="/about" className="block py-2 text-gray-700 hover:text-green-600">About</a>
+              </nav>
+            </div>
+          </div>
+        )}
       </div>
     </header>
-  );
-}
-
-function SearchBox() {
-  const [query, setQuery] = React.useState("");
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const router = useRouter();
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query)}`);
-      setQuery("");
-      inputRef.current?.blur();
-    }
-  }
-
-  function handleClear() {
-    setQuery("");
-    inputRef.current?.focus();
-  }
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="relative flex items-center w-full max-w-xs md:max-w-sm lg:max-w-md bg-stone-900 rounded-md "
-      role="search"
-      aria-label="Site search"
-    >
-      <input
-        ref={inputRef}
-        type="text"
-        className="w-full rounded-l-md border border-stone-600 border-r-0 px-3 py-2 focus:outline-none focus:ring-0 focus:ring-blue-500 text-primary-foreground placeholder:text-xs"
-        placeholder="Search products, brands, or categories..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        aria-label="Search"
-      />
-      {query && (
-        <button
-          type="button"
-          onClick={handleClear}
-          className="absolute right-12 text-gray-100 focus:outline-none bg-stone-600 rounded-full p-1 cursor-pointer hover:text-red-500"
-          tabIndex={0}
-          aria-label="Clear search"
-        >
-          <svg
-            width="16"
-            height="16"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M18 6L6 18M6 6l12 12"
-            />
-          </svg>
-        </button>
-      )}
-      <Button
-        type="submit"
-        size="sm"
-        className="rounded-l-none rounded-r-md px-3 py-2 h-full flex items-center gap-1 bg-stone-700 cursor-pointer"
-        aria-label="Submit search"
-      >
-        <Search className="w-4 h-4" />
-      </Button>
-    </form>
-  );
+  )
 }

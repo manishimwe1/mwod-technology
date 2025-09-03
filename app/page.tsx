@@ -1,33 +1,58 @@
-// App.jsx
-// import BrandsCarousel from "@/components/BrandsCarousel";
-// import DealsOfTheDay from "@/components/DealsOfTheDay";
-import FeaturedProducts from "@/components/FeaturedProducts";
-import Footer from "@/components/Footer";
-import HeroSection from "@/components/HeroSection";
-// import NewsSection from "@/components/NewsSection";
-// import ProductCategories from "@/components/ProductCategories";
-// import TrendingTags from "@/components/TrendingTags";
-import { getHeroSection } from "@/sanity/getData";
-import React from "react";
+// import { client } from '@/sanity/lib/client'
+import CategoryGrid from '@/components/CategoryGrid'
+import Footer from '@/components/Footer'
+import Hero from '@/components/Hero'
+import TrendingProducts from '@/components/TrendingProducts'
+// import { client } from '@/sanity/lib/client'
 
+// async function getFeaturedProducts() {
+//   return await client.fetch(`
+//     *[_type == "product" && featured == true][0...8] {
+//       _id,
+//       name,
+//       brand,
+//       slug,
+//       images,
+//       currentPrice,
+//       retailPrice,
+//       lowestAsk,
+//       highestBid,
+//       category
+//     }
+//   `)
+// }
 
-export default async function App() {
-  const heroSection = await getHeroSection();
+// async function getTrendingProducts() {
+//   return await client.fetch(`
+//     *[_type == "product"] | order(salesCount desc)[0...12] {
+//       _id,
+//       name,
+//       brand,
+//       slug,
+//       images,
+//       currentPrice,
+//       retailPrice,
+//       lowestAsk,
+//       highestBid,
+//       salesCount,
+//       category
+//     }
+//   `)
+// }
+
+export default async function Home() {
+  // const [ trendingProducts] = await Promise.all([
+  //   getFeaturedProducts(),
+  //   getTrendingProducts()
+  // ])
 
   return (
-    <div className="font-sans text-gray-900">
-      <HeroSection heroSection={heroSection} />
-      {/* <ProductCategories /> */}
-      
-      <section id="products" className="w-full h-full">
-      <FeaturedProducts />
-      </section>
-      {/* <BestSellers /> */}
-      {/* <DealsOfTheDay />
-      <BrandsCarousel />
-      <TrendingTags />
-      <NewsSection /> */}
+    <main className="min-h-screen bg-white">
+      <Hero />
+      {/* <FeaturedProducts products={[]} /> */}
+      <CategoryGrid/>
+      <TrendingProducts  />
       <Footer />
-    </div>
-  );
+    </main>
+  )
 }

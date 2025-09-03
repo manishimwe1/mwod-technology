@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="bg-blue-900 text-white py-8">
       <div className="container mx-auto grid md:grid-cols-3 gap-6 text-center md:text-left justify-center">
         <div>
-          <h3 className="font-semibold mb-2">Mosse tech ltd</h3>
+          <h3 className="font-semibold mb-2">ElectroX</h3>
           <p className="text-sm">High-quality electronics & great deals.</p>
         </div>
         <div>
