@@ -1,53 +1,17 @@
-// import { client } from '@/sanity/lib/client'
+'use client'
+
 import CategoryGrid from '@/components/CategoryGrid'
 import Footer from '@/components/Footer'
 import Hero from '@/components/Hero'
 import TrendingProducts from '@/components/TrendingProducts'
-// import { client } from '@/sanity/lib/client'
+import { useUser } from '@clerk/nextjs';
 
-// async function getFeaturedProducts() {
-//   return await client.fetch(`
-//     *[_type == "product" && featured == true][0...8] {
-//       _id,
-//       name,
-//       brand,
-//       slug,
-//       images,
-//       currentPrice,
-//       retailPrice,
-//       lowestAsk,
-//       highestBid,
-//       category
-//     }
-//   `)
-// }
 
-// async function getTrendingProducts() {
-//   return await client.fetch(`
-//     *[_type == "product"] | order(salesCount desc)[0...12] {
-//       _id,
-//       name,
-//       brand,
-//       slug,
-//       images,
-//       currentPrice,
-//       retailPrice,
-//       lowestAsk,
-//       highestBid,
-//       salesCount,
-//       category
-//     }
-//   `)
-// }
-
-export default async function Home() {
-  // const [ trendingProducts] = await Promise.all([
-  //   getFeaturedProducts(),
-  //   getTrendingProducts()
-  // ])
-
+export default function Home() {
+ const { user } = useUser();
   return (
     <main className="min-h-screen bg-white">
+      <span>Logged in as {user?.fullName}</span>;
       <Hero />
       {/* <FeaturedProducts products={[]} /> */}
       <CategoryGrid/>
