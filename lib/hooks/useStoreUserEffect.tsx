@@ -37,5 +37,7 @@ export function useStoreUserEffect() {
   return {
     isLoading: isLoading || (isAuthenticated && userId === null),
     isAuthenticated: isAuthenticated && userId !== null,
+    userId,
+
   };
 }
