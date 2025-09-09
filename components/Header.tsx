@@ -1,6 +1,7 @@
 'use client'
 
 import { Search, User, ShoppingBag, Menu } from 'lucide-react'
+import Link from 'next/link'
 import { useState } from 'react'
 
 export default function Header() {
@@ -12,25 +13,25 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <a href="/" className="text-2xl font-bold text-green-600">
+            <Link href="/" className="text-2xl font-bold text-green-600">
               ElectroX
-            </a>
+            </Link>
           </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="/browse" className="text-gray-700 hover:text-green-600 font-medium">
+            <Link href="/browse" className="text-gray-700 hover:text-green-600 font-medium">
               Browse
-            </a>
-            <a href="/sell" className="text-gray-700 hover:text-green-600 font-medium">
+            </Link>
+            <Link href="/sell" className="text-gray-700 hover:text-green-600 font-medium">
               Sell
-            </a>
-            <a href="/news" className="text-gray-700 hover:text-green-600 font-medium">
+            </Link>
+            <Link href="/news" className="text-gray-700 hover:text-green-600 font-medium">
               News
-            </a>
-            <a href="/about" className="text-gray-700 hover:text-green-600 font-medium">
+            </Link>
+            <Link href="/about" className="text-gray-700 hover:text-green-600 font-medium">
               About
-            </a>
+            </Link>
           </nav>
 
           {/* Search */}

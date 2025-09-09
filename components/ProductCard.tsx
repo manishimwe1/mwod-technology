@@ -98,8 +98,8 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
         <ShoppingCart className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-200" />
       </Button>
 
-      <div className="flex flex-col pb-4">
-        <h3 className="text-2xl font-semibold text-gray-900 py-4 line-clamp-2 leading-5 tracking-tight hover:text-blue-600 transition-colors">
+      <div className="flex flex-col pb-4 space-y-2">
+        <h3 className="text-xl font-semibold text-gray-900 h-full line-clamp-2 tracking-tight hover:text-blue-600 transition-colors">
           {product.name.length > 60 
             ? `${product.name.substring(0, 1).toUpperCase()}${product.name.substring(1, 60)}...`
             : `${product.name.substring(0, 1).toUpperCase()}${product.name.substring(1)}`}
