@@ -13,3 +13,26 @@ export const NavLinks = [
     },
     
 ]
+
+export const categories = [
+  "Electronics",
+  "Computers & Laptops",
+  "Mobile & Tablets",
+  "Audio & Headphones",
+  "Storage & Memory",
+  "Gaming",
+  "Accessories",
+];
+
+export const brands = [
+  "Samsung",
+  "Apple",
+  "HP",
+  "Dell",
+  "Lenovo",
+  "Asus",
+  "Acer",
+  "Microsoft",
+  "Sony",
+  "LG",
+];

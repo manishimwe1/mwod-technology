@@ -34,7 +34,7 @@ export default defineSchema({
     ),
     tags: v.optional(v.array(v.string())),
     images: v.array(v.string()),
-    warranty: v.optional(v.string()),
+    warranty: v.optional(v.number()),
     status: v.union(
       v.literal("active"),
       v.literal("inactive"),

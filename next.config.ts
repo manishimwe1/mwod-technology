@@ -8,8 +8,13 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds:true
   },
   images: {
-    remotePatterns: [new URL('https://cdn.sanity.io/**')],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: "healthy-tapir-682.convex.cloud",
+      },
+    ],
   },
-};
+}
 
 export default nextConfig;
