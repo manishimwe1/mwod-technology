@@ -68,11 +68,12 @@ export function ProformaInvoiceCard({ invoice }: { invoice: Doc<"invoice"> }) {
     startY: y,
     head: [tableColumn],
     body: tableRows,
-    headStyles: { fillColor: [230, 230, 230] },
+    headStyles: { fillColor: [41, 128, 185], textColor: 'white' },
     styles: { fontSize: 10 },
   });
 
   // Total amount
+ 
   const finalY = pdf.lastAutoTable.finalY ?? y + 20;
   pdf.setFont("helvetica", "bold");
   pdf.text(

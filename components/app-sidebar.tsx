@@ -17,6 +17,7 @@ import {
   IconSettings,
   IconUsers,
   IconPlus,
+  IconCirclePlusFilled
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -32,7 +33,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
+ 
 const data = {
   user: {
     name: "shadcn",
@@ -40,6 +41,11 @@ const data = {
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: IconCirclePlusFilled,
+    },
     {
       title: "Create new",
       url: "/dashboard/create-new-product",
