@@ -46,8 +46,8 @@ const data = {
       icon: IconPlus,
     },
     {
-      title: "Lifecycle",
-      url: "#",
+      title: "Poforma",
+      url: "/dashboard/poforma",
       icon: IconListDetails,
     },
     {

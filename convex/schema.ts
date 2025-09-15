@@ -1,6 +1,22 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 export default defineSchema({
+ invoice:defineTable({
+  clientName:v.string(),
+  clientPhone:v.optional(v.string()),
+  items:v.array(
+   v.object({
+      description:v.string(),
+      quantity:v.number(),
+      unitPrice:v.number(),
+    })
+  ),
+  status: v.union(v.literal("draft"), v.literal("sent"), v.literal("paid")),
+  notes:v.optional(v.string()),
+  totalAmount:v.number(),
+  updatedAt:v.number(),
+}),
+
   users: defineTable({
     name: v.string(),
     tokenIdentifier: v.string(),
