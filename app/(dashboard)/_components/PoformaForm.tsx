@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus, Trash2, Save } from "lucide-react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
@@ -31,12 +31,13 @@ const itemSchema = z.object({
 const formSchema = z.object({
   clientName: z.string().min(2, "Client name is required"),
   clientPhone: z.string().optional().or(z.literal("")),
+  clientTIN: z.string().optional().or(z.literal("")),
   items: z.array(itemSchema).min(1, "At least one item is required"),
   status: z.enum(["draft", "sent", "paid"]).default("draft"),
   notes: z.string().optional(),
 });
 
-export function ProformaInvoiceForm() {
+export function ProformaInvoiceForm({ onClose }: { onClose: Dispatch<SetStateAction<boolean>>}) {
   const [isSaving, setIsSaving] = useState(false);
 
   const createInvoice = useMutation(api.invoice.createInvoice);
@@ -46,6 +47,7 @@ export function ProformaInvoiceForm() {
     defaultValues: {
       clientName: "",
       clientPhone: "",
+      clientTIN: "",
       items: [{ description: "", quantity: 1, unitPrice: 0 }],
       status: "draft",
       notes: "",
@@ -81,6 +83,8 @@ export function ProformaInvoiceForm() {
       await createInvoice(invoiceData);
       toast.success("Proforma invoice saved successfully!");
       form.reset(); // optional: reset form after save
+      setIsSaving(false);
+      onClose(false);
     } catch (error) {
       console.error(error);
       toast.error("Error saving proforma invoice.");
@@ -122,6 +126,19 @@ export function ProformaInvoiceForm() {
               )}
             />
           </div>
+          <FormField
+              control={form.control}
+              name="clientTIN"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Client TIN (Optional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="123456789" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
           {/* Items */}
           <div className="space-y-4">

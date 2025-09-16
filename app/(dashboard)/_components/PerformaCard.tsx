@@ -32,6 +32,10 @@ export function ProformaInvoiceCard({ invoice }: { invoice: Doc<"invoice"> }) {
     y += 5;
     pdf.text("Email: baganinezajb@gmail.com", leftMargin, y);
     y += 5;
+    pdf.text("Equity bank: 4002201284211", leftMargin, y);
+    y += 5;
+    pdf.text("Equity USD: 4002201284215", leftMargin, y);
+    y += 5;
 
     // Right-side invoice info
     y = 20;
@@ -45,6 +49,12 @@ export function ProformaInvoiceCard({ invoice }: { invoice: Doc<"invoice"> }) {
     y += 5;
     if (invoice.clientPhone) {
       pdf.text(`TEL: ${invoice.clientPhone}`, rightMargin, y, {
+        align: "right",
+      });
+      y += 5;
+    }
+    if (invoice.clientTIN) {
+      pdf.text(`TIN: ${invoice.clientTIN}`, rightMargin, y, {
         align: "right",
       });
       y += 5;
@@ -165,13 +175,15 @@ export function ProformaInvoiceCard({ invoice }: { invoice: Doc<"invoice"> }) {
     <Card className="w-full mx-auto shadow-lg border border-gray-200 p-6">
       <CardHeader className="flex flex-row justify-between items-start p-0 mb-4">
         <div className="flex flex-col text-sm">
-          <CardTitle className="text-base font-bold mb-1">
+          <CardTitle className="flex items-start gap-2 flex-col">
             <p>EASYFIX TECH</p>
             <p>NYARUNGENGE</p>
             <p>KIGALI-RWANDA</p>
             <p>PHONE: 0783805516</p>
             <p>Email: baganinezajb@gmail.com</p>
             <p>TIN: 128218272</p>
+            <p>Equity bank: 4002201284211</p>
+            <p>Equity USD: 4002201284215</p>
           </CardTitle>
         </div>
         <div className="flex flex-col text-sm text-right">
@@ -180,6 +192,7 @@ export function ProformaInvoiceCard({ invoice }: { invoice: Doc<"invoice"> }) {
           </CardTitle>
           <p>Client: {invoice.clientName}</p>
           {invoice.clientPhone && <p>TEL: {invoice.clientPhone}</p>}
+          {invoice.clientTIN && <p>TIN: {invoice.clientTIN}</p>}
           <p>Balance due</p>
           <p className="font-bold text-blue-500">
             {invoice.totalAmount?.toLocaleString() ?? 0} Rwf

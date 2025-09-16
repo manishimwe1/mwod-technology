@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { ProformaInvoiceForm } from "./PoformaForm";
 const AddPoforma = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>Add poforma</Button>
       </DialogTrigger>
@@ -19,7 +20,7 @@ const AddPoforma = () => {
           <DialogTitle></DialogTitle>
           
         </DialogHeader>
-        <ProformaInvoiceForm/>
+        <ProformaInvoiceForm onClose={setIsOpen} />
       </DialogContent>
     </Dialog>
   );

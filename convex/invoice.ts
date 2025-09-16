@@ -7,6 +7,7 @@ export const createInvoice = mutation({
   args: {
     clientName: v.string(),
     clientPhone: v.optional(v.string()),
+    clientTIN: v.optional(v.string()),
     items: v.array(
       v.object({
         description: v.string(),
