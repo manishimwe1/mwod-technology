@@ -1,5 +1,6 @@
 "use client";
 
+import { SignInButton } from "@clerk/nextjs";
 import { Search, User, ShoppingBag, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,41 +16,44 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center justify-center relative gap-2 h-14 w-14">
             <Link href="/" className="text-2xl font-bold text-green-600">
-              <Image
-                src="/logo.png"
-                alt="logo"
-                fill
-                priority
-              />
+              <Image src="/logo.png" alt="logo" fill priority />
             </Link>
           </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
-              href="/browse"
+              href="/#"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               Browse
             </Link>
             <Link
-              href="/sell"
+              href="/#"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               Sell
             </Link>
             <Link
-              href="/news"
+              href="/#"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               News
             </Link>
             <Link
-              href="/about"
+              href="/#"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               About
             </Link>
+            <SignInButton forceRedirectUrl={"/dashboard"}>
+              <Link
+                href="/dashboard"
+                className="text-gray-700 hover:text-green-600 font-medium"
+              >
+                Dashboard
+              </Link>
+            </SignInButton>
           </nav>
 
           {/* Search */}
@@ -101,29 +105,37 @@ export default function Header() {
               </div>
               <nav className="space-y-2">
                 <a
-                  href="/browse"
+                  href="#"
                   className="block py-2 text-gray-700 hover:text-green-600"
                 >
                   Browse
                 </a>
                 <a
-                  href="/sell"
+                  href="#"
                   className="block py-2 text-gray-700 hover:text-green-600"
                 >
                   Sell
                 </a>
                 <a
-                  href="/news"
+                  href="#"
                   className="block py-2 text-gray-700 hover:text-green-600"
                 >
                   News
                 </a>
                 <a
-                  href="/about"
+                  href="#"
                   className="block py-2 text-gray-700 hover:text-green-600"
                 >
                   About
                 </a>
+                <SignInButton >
+                  <a
+                    href="#"
+                    className="block py-2 text-gray-700 hover:text-green-600"
+                  >
+                    Dashboard
+                  </a>
+                </SignInButton>
               </nav>
             </div>
           </div>
