@@ -58,4 +58,5 @@ export const formSchema = z.object({
       ),
     })
   ).min(1, { message: "At least one item is required." }),
+   date: z.coerce.date(),
 });

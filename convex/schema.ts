@@ -65,7 +65,7 @@ export default defineSchema({
 
   facture: defineTable({
     clientName: v.string(),
-    factureInvoice: v.optional(v.number()),
+    factureNumber: v.optional(v.number()),
     items: v.array(
       v.object({
         description: v.string(),

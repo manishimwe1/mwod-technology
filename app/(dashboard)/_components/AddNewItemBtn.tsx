@@ -17,9 +17,9 @@ const AddNewItemBtn = ({ title }: { title: string }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>{title}</Button>
+        <Button className="cursor-pointer">{title}</Button>
       </DialogTrigger>
-      <DialogContent >
+      <DialogContent className="md:min-w-2xl">
         <DialogHeader>
           <DialogTitle></DialogTitle>
         </DialogHeader>

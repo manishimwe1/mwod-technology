@@ -39,9 +39,7 @@ const formSchema = z.object({
   clientName: z.string().min(2, "Client name is required"),
   clientPhone: z.string().optional().or(z.literal("")),
   clientTIN: z.string().optional().or(z.literal("")),
-  date: z.coerce.date({
-    error: "Date is required",
-  }),
+  date: z.coerce.date(),
   items: z.array(itemSchema).min(1, "At least one item is required"),
   status: z.enum(["draft", "sent", "paid"]).default("draft"),
 });
