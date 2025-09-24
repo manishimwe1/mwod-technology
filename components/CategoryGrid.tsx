@@ -12,6 +12,7 @@ type CategoryCardProps = {
   listings: number;
   sellers: number;
   gradient?: string;
+  slug:string;
 };
 
 const CategoryCard = ({
@@ -20,9 +21,10 @@ const CategoryCard = ({
   listings,
   sellers,
   gradient,
+  slug
 }: CategoryCardProps) => {
   return (
-    <Link href={`/product?category=${title}`}>
+    <Link href={`/product?category=${slug}`}>
       <Card
         className={cn(
           "rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 overflow-hidden",
@@ -71,6 +73,7 @@ export default function CategoryGrid() {
       image: "/phone.png",
       listings: 14861,
       sellers: 1422,
+      slug:'phones+iphones',
       gradient: "bg-gradient-to-b from-white via-blue-50 to-blue-100",
     },
     {
@@ -78,6 +81,7 @@ export default function CategoryGrid() {
       image: "/laptops.png",
       listings: 920,
       sellers: 408,
+      slug:'macbooks+laptops',
       gradient: "bg-gradient-to-b from-white via-purple-50 to-purple-100",
     },
     {
@@ -85,6 +89,7 @@ export default function CategoryGrid() {
       image: "/watch.png",
       listings: 1274,
       sellers: 264,
+      slug:'watches+accessories',
       gradient: "bg-gradient-to-b from-white via-pink-50 to-pink-100",
     },
   ];

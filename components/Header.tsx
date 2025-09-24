@@ -23,25 +23,25 @@ export default function Header() {
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
-              href="/#"
+              href="/"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               Browse
             </Link>
             <Link
-              href="/#"
+              href="/sell"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               Sell
             </Link>
-            <Link
+            {/* <Link
               href="/#"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               News
-            </Link>
+            </Link> */}
             <Link
-              href="/#"
+              href="/"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               About
@@ -80,7 +80,7 @@ export default function Header() {
               <ShoppingBag size={24} />
             </button>
             <button
-              className="md:hidden p-2 text-gray-700"
+              className="md:hidden p-2 text-gray-700 cursor-pointer"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <Menu size={24} />
@@ -104,18 +104,18 @@ export default function Header() {
                 />
               </div>
               <nav className="space-y-2">
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className="block py-2 text-gray-700 hover:text-green-600"
                 >
                   Browse
-                </a>
-                <a
+                </Link>
+                <Link
                   href="#"
                   className="block py-2 text-gray-700 hover:text-green-600"
                 >
                   Sell
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="block py-2 text-gray-700 hover:text-green-600"
