@@ -229,7 +229,6 @@ export default function CreateProductPage() {
         updatedAt: new Date().toISOString(),
         createdBy: userId,
         warranty: data.warranty,
-
       });
 
       toast.success("Product created successfully!", { richColors: true });
@@ -706,7 +705,11 @@ export default function CreateProductPage() {
 
               {/* Submit */}
               <div className="flex gap-4">
-                <Button type="submit" className="flex-1" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="flex-1 cursor-pointer"
+                  disabled={loading}
+                >
                   {loading ? (
                     <div className="flex items-center gap-2">
                       <Loader className="h-5 w-5 animate-spin" />

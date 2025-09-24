@@ -130,7 +130,7 @@ export default function Header() {
                 </a>
                 <SignInButton >
                   <a
-                    href="#"
+                    href="/dashboard"
                     className="block py-2 text-gray-700 hover:text-green-600"
                   >
                     Dashboard
