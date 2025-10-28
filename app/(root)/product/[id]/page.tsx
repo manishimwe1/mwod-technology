@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic"; // 👈 prevent prerender crash
-
 import Loading from "@/components/Loading";
 import {
   Carousel,
@@ -14,26 +12,34 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import Autoplay from "embla-carousel-autoplay";
-import { Heart, Info } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
+  const [isClient, setIsClient] = useState(false);
   const params = useParams();
+
+  // ✅ Ensure we're on the client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // ✅ Autoplay plugin (safe ref)
   const plugin = useRef(Autoplay({ delay: 600000, stopOnInteraction: false }));
 
   // ✅ Convex product query (safe runtime only)
-  const product = useQuery(api.product.getProduct, {
-    id: params.id as Id<"products">,
-  });
+  const product = useQuery(
+    api.product.getProduct,
+    isClient && params.id ? { id: params.id as Id<"products"> } : "skip"
+  );
 
   // ✅ Loading and null guards
+  if (!isClient) return <Loading title="Loading..." />;
   if (product === undefined) return <Loading title="Loading product details..." />;
   if (product === null) return <div className="p-10 text-center">Product not found.</div>;
 
@@ -101,15 +107,6 @@ const ProductDetailPage = () => {
               <h1 className="text-2xl font-semibold text-gray-900 py-4">
                 {product.name}
               </h1>
-
-              {/* Specifications */}
-              {/* <div className="flex flex-wrap gap-2">
-                {product.specifications?.map((spec) => (
-                  <p className="text-gray-600 mt-2" key={spec.key}>
-                    <span className="font-bold">{spec.key}:</span> {spec.value}
-                  </p>
-                ))}
-              </div> */}
 
               {/* Description */}
               <div className="text-gray-700 text-justify py-2 text-sm leading-relaxed">

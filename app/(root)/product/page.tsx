@@ -1,35 +1,49 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { Loader2 } from "lucide-react";
-import { Switch } from "@/components/ui/switch"; // Assuming you have a Switch component
-import { Label } from "@/components/ui/label"; // Assuming you have a Label component
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"; // Assuming you have an Accordion component
+} from "@/components/ui/accordion";
 import ProductCard from "@/components/ProductCard";
 import { useProductStore } from "@/lib/store";
 import { Doc } from "@/convex/_generated/dataModel";
 
 const ProductPage = () => {
+  const [isClient, setIsClient] = useState(false);
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
-  const { products: fetchedProducts,setProducts } = useProductStore();
-const productsInDB = useQuery(api.product.getProductsWithImage);
+  const { products: fetchedProducts, setProducts } = useProductStore();
+  const productsInDB = useQuery(api.product.getProductsWithImage);
 
+  // Ensure we're on the client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (productsInDB) setProducts(productsInDB as Doc<"products">[]);
   }, [productsInDB, setProducts]);
 
-  console.log({fetchedProducts});
-  
+  console.log({ fetchedProducts });
+
+  if (!isClient) {
+    return (
+      <div className="flex items-center justify-center flex-col h-screen w-full">
+        <Loader2 className="animate-spin h-10 w-10 text-primary" />
+        <span className="mt-2 text-lg text-gray-600">Loading...</span>
+      </div>
+    );
+  }
+
   if (!fetchedProducts) {
     return (
       <div className="flex items-center justify-center flex-col h-screen w-full">
@@ -42,7 +56,7 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
   // Filter products by category if a category is present in the URL
   const filteredProducts = category
     ? fetchedProducts.filter(
-        (product) => product.category.toLowerCase().includes( category.toLowerCase())
+        (product) => product.category.toLowerCase().includes(category.toLowerCase())
       )
     : fetchedProducts;
 
@@ -76,7 +90,6 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
                 Category
               </AccordionTrigger>
               <AccordionContent>
-                {/* Placeholder for category filters */}
                 <ul className="space-y-2">
                   <li>
                     <a href="#" className="text-gray-600 hover:text-blue-600">
@@ -102,7 +115,6 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
                 Gender
               </AccordionTrigger>
               <AccordionContent>
-                {/* Placeholder for gender filters */}
                 <ul className="space-y-2">
                   <li>
                     <a href="#" className="text-gray-600 hover:text-blue-600">
@@ -128,7 +140,6 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
                 Product Line
               </AccordionTrigger>
               <AccordionContent>
-                {/* Placeholder for product line filters */}
                 <ul className="space-y-2">
                   <li>
                     <a href="#" className="text-gray-600 hover:text-blue-600">
@@ -149,7 +160,6 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
                 Model
               </AccordionTrigger>
               <AccordionContent>
-                {/* Placeholder for model filters */}
                 <ul className="space-y-2">
                   <li>
                     <a href="#" className="text-gray-600 hover:text-blue-600">
@@ -170,7 +180,6 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
                 Activity
               </AccordionTrigger>
               <AccordionContent>
-                {/* Placeholder for activity filters */}
                 <ul className="space-y-2">
                   <li>
                     <a href="#" className="text-gray-600 hover:text-blue-600">
@@ -191,7 +200,6 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
                 Color
               </AccordionTrigger>
               <AccordionContent>
-                {/* Placeholder for color filters */}
                 <ul className="space-y-2">
                   <li>
                     <a href="#" className="text-gray-600 hover:text-blue-600">
@@ -212,7 +220,6 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
                 Price
               </AccordionTrigger>
               <AccordionContent>
-                {/* Placeholder for price range slider/inputs */}
                 <p className="text-gray-600">
                   Price range slider coming soon...
                 </p>
@@ -227,7 +234,6 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
               {category ? `Products in ${category}` : "All Products"}
             </h1>
-            {/* Sort/Featured dropdown placeholder */}
             <div className="flex items-center gap-2">
               <Label htmlFor="sort-by" className="text-lg font-medium">
                 Sort By:
@@ -254,7 +260,7 @@ const productsInDB = useQuery(api.product.getProductsWithImage);
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-              {filteredProducts.map((product,index) => (
+              {filteredProducts.map((product, index) => (
                 <ProductCard key={product._id} product={product} index={index} />
               ))}
             </div>
