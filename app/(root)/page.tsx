@@ -2,8 +2,6 @@
 
 import CategoryGrid from "@/components/CategoryGrid";
 import Footer from "@/components/Footer";
-// import { v4 as uuidv4 } from "uuid";
-// import Hero from '@/components/Hero'
 import TrendingProducts from "@/components/TrendingProducts";
 
 export default function Home() {
@@ -26,7 +24,6 @@ export default function Home() {
       {/* <FeaturedProducts products={[]} /> */}
       <CategoryGrid />
       <TrendingProducts />
-      <Footer />
     </main>
   );
 }

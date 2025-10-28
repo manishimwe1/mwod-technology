@@ -6,7 +6,7 @@ const Loading = ({title}:{
 
 }) => {
   return (
-    <div className='flex justify-center items-center h-screen'>
+    <div className='flex justify-center items-center h-screen gap-4'>
         <Loader className='h-10 w-10 animate-spin text-primary' />
         <p className='text-primary'>{title}</p>
 

@@ -97,7 +97,7 @@ export default function CategoryGrid() {
   return (
     <section className="py-12 px-4">
       <h2 className="text-center text-2xl font-bold mb-10 text-blue-900">
-        Buy <span className="text-black">+ Sell +</span> Save
+        Buy <span className="text-black">+</span> Save
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
