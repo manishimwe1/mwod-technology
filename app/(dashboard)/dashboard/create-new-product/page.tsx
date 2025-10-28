@@ -1,9 +1,7 @@
 "use client";
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -13,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -20,21 +19,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Plus, X, Upload, Loader } from "lucide-react";
-import { useDropzone } from "react-dropzone";
-import Image from "next/image";
-import { productSchema } from "@/lib/validation";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { useStoreUserEffect } from "@/lib/hooks/useStoreUserEffect";
-import { toast } from "sonner";
-import { Id } from "@/convex/_generated/dataModel";
 import { brands, categories } from "@/constants";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { useStoreUserEffect } from "@/lib/hooks/useStoreUserEffect";
+import { productSchema } from "@/lib/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "convex/react";
+import { Loader, Upload, X } from "lucide-react";
+import Image from "next/image";
+import React from "react";
+import { useDropzone } from "react-dropzone";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 type ProductFormData = z.infer<typeof productSchema>;
 export default function CreateProductPage() {
@@ -45,17 +44,10 @@ export default function CreateProductPage() {
       description: "",
       brand: "",
       category: "",
-      price: 0,
+      discountPrice: 0,
       originalPrice: 0,
-      currency: "Rwf",
       stock: 0,
-      sku: "",
-      rating: 0,
-      reviewCount: 0,
-      isNew: false,
-      isOnSale: false,
-      specifications: [],
-      tags: [],
+      serialNumber: "",
       images: [],
       status: "draft",
       warranty: 0,
@@ -65,55 +57,9 @@ export default function CreateProductPage() {
   const createProduct = useMutation(api.product.createProduct);
   const generateUploadUrl = useMutation(api.product.generateUploadUrl);
   const { userId } = useStoreUserEffect();
-
-  const [specifications, setSpecifications] = React.useState<
-    { key: string; value: string }[]
-  >([{ key: "", value: "" }]);
-  const [tags, setTags] = React.useState<string[]>([]);
-  const [tagInput, setTagInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = React.useState<string[]>([]);
-
-  // Specification logic
-  const addSpecification = () => {
-    setSpecifications([...specifications, { key: "", value: "" }]);
-  };
-
-  const removeSpecification = (index: number) => {
-    setSpecifications(specifications.filter((_, i) => i !== index));
-  };
-
-  const updateSpecification = (
-    index: number,
-    field: "key" | "value",
-    value: string
-  ) => {
-    const updated = specifications.map((spec, i) =>
-      i === index ? { ...spec, [field]: value } : spec
-    );
-    setSpecifications(updated);
-    form.setValue(
-      "specifications",
-      updated.filter((spec) => spec.key && spec.value)
-    );
-  };
-
-  // Tags
-  const addTag = () => {
-    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-      const newTags = [...tags, tagInput.trim()];
-      setTags(newTags);
-      form.setValue("tags", newTags);
-      setTagInput("");
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    const newTags = tags.filter((tag) => tag !== tagToRemove);
-    setTags(newTags);
-    form.setValue("tags", newTags);
-  };
 
   // Image handling
   const onDrop = React.useCallback(
@@ -213,49 +159,27 @@ export default function CreateProductPage() {
         category: data.category,
         name: data.name,
         description: data.description,
-        price: data.price,
+        discountPrice: data.discountPrice,
         originalPrice: data.originalPrice,
-        currency: data.currency,
         stock: data.stock,
-        sku: data.sku,
-        rating: data.rating,
-        reviewCount: data.reviewCount,
-        isNew: data.isNew,
-        isOnSale: data.isOnSale,
-        specifications: data.specifications,
-        tags: data.tags,
+        serialNumber: data.serialNumber,
         images: imageUrls, // Use storage IDs instead of file names
         status: data.status,
         updatedAt: new Date().toISOString(),
         createdBy: userId,
         warranty: data.warranty,
+
       });
 
       toast.success("Product created successfully!", { richColors: true });
       form.reset();
       setUploadedFiles([]);
       setImagePreviews([]);
-      setTags([]);
-      setSpecifications([{ key: "", value: "" }]);
     } catch (error) {
       console.error("Error creating product:", error);
       toast.error("Error creating product", { richColors: true });
     } finally {
       setLoading(false);
-    }
-  };
-
-  // SKU Generator
-  const generateSKU = () => {
-    const brand = form.getValues("brand");
-    const category = form.getValues("category");
-    const timestamp = Date.now().toString().slice(-6);
-
-    if (brand && category) {
-      const sku = `${brand.substring(0, 3).toUpperCase()}-${category
-        .substring(0, 3)
-        .toUpperCase()}-${timestamp}`;
-      form.setValue("sku", sku);
     }
   };
 
@@ -275,7 +199,7 @@ export default function CreateProductPage() {
               })}
               className="space-y-6"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="">
                 <FormField
                   control={form.control}
                   name="name"
@@ -285,34 +209,6 @@ export default function CreateProductPage() {
                       <FormControl>
                         <Input placeholder="Enter product name" {...field} />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* Brand */}
-                <FormField
-                  control={form.control}
-                  name="brand"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Brand *</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select brand" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {brands.map((brand) => (
-                            <SelectItem key={brand} value={brand}>
-                              {brand}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -338,21 +234,20 @@ export default function CreateProductPage() {
                 )}
               />
 
-              {/* Category + SKU */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center justify-between gap-4">
                 {/* Category */}
                 <FormField
                   control={form.control}
                   name="category"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="w-full">
                       <FormLabel>Category *</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                         </FormControl>
@@ -368,26 +263,46 @@ export default function CreateProductPage() {
                     </FormItem>
                   )}
                 />
-                {/* SKU */}
+
+                {/* Brand */}
                 <FormField
                   control={form.control}
-                  name="sku"
+                  name="brand"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>SKU *</FormLabel>
-                      <div className="flex gap-2">
+                    <FormItem className="w-full">
+                      <FormLabel>Brand *</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <FormControl>
-                          <Input placeholder="Product SKU" {...field} />
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select brand" />
+                          </SelectTrigger>
                         </FormControl>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={generateSKU}
-                          className="px-3"
-                        >
-                          Generate
-                        </Button>
-                      </div>
+                        <SelectContent>
+                          {brands.map((brand) => (
+                            <SelectItem key={brand} value={brand}>
+                              {brand}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="serialNumber"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Serial Number *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Product serial number" {...field} />
+                      </FormControl>
+
                       <FormMessage />
                     </FormItem>
                   )}
@@ -396,28 +311,6 @@ export default function CreateProductPage() {
 
               {/* Pricing */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Price */}
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Current Price *</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          placeholder="0.00"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(parseFloat(e.target.value) || 0)
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 {/* Original Price */}
                 <FormField
                   control={form.control}
@@ -436,7 +329,30 @@ export default function CreateProductPage() {
                           }
                         />
                       </FormControl>
-                      <FormDescription>For sale items</FormDescription>
+                      <FormDescription>Current selling price</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* discount Price */}
+                <FormField
+                  control={form.control}
+                  name="discountPrice"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Discount Price</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="0.00"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(parseFloat(e.target.value) || 0)
+                          }
+                        />
+                      </FormControl>
+                      <FormDescription>Current discount price</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -458,6 +374,7 @@ export default function CreateProductPage() {
                           }
                         />
                       </FormControl>
+                      <FormDescription>Current stock quantity</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -529,39 +446,8 @@ export default function CreateProductPage() {
                 )}
               </div>
 
-              {/* Tags */}
-              <div className=" flex items-start justify-between gap-5">
-                <div className="w-full flex flex-col gap-2">
-                  <FormLabel>Tags</FormLabel>
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Add tag and press Enter"
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          addTag();
-                        }
-                      }}
-                    />
-                    <Button type="button" variant="outline" onClick={addTag}>
-                      Add
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="secondary"
-                        className="cursor-pointer"
-                        onClick={() => removeTag(tag)}
-                      >
-                        {tag} <X className="h-3 w-3 ml-1" />
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
+              {/* Status + Flags */}
+              <div className="flex items-center justify-end w-full gap-4">
                 <FormField
                   control={form.control}
                   name="warranty"
@@ -582,70 +468,20 @@ export default function CreateProductPage() {
                     </FormItem>
                   )}
                 />
-              </div>
 
-              {/* Specifications */}
-              <div className="space-y-3">
-                <FormLabel>Product Specifications</FormLabel>
-                {specifications.map((spec, index) => (
-                  <div
-                    key={index}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-2"
-                  >
-                    <Input
-                      placeholder="Specification name (e.g., Storage)"
-                      value={spec.key}
-                      onChange={(e) =>
-                        updateSpecification(index, "key", e.target.value)
-                      }
-                    />
-                    <div className="flex gap-2">
-                      <Input
-                        placeholder="Value (e.g., 1TB SSD)"
-                        value={spec.value}
-                        onChange={(e) =>
-                          updateSpecification(index, "value", e.target.value)
-                        }
-                      />
-                      {specifications.length > 1 && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          onClick={() => removeSpecification(index)}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={addSpecification}
-                  className="w-full"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Specification
-                </Button>
-              </div>
-
-              {/* Status + Flags */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Status */}
                 <FormField
                   control={form.control}
                   name="status"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="w-[100px]">
                       <FormLabel>Status</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-full">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -656,48 +492,6 @@ export default function CreateProductPage() {
                         </SelectContent>
                       </Select>
                       <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* isNew */}
-                <FormField
-                  control={form.control}
-                  name="isNew"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">New Product</FormLabel>
-                        <FormDescription>Mark as new arrival</FormDescription>
-                      </div>
-                      <FormControl>
-                        <input
-                          type="checkbox"
-                          checked={field.value}
-                          onChange={field.onChange}
-                          className="h-4 w-4"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                {/* isOnSale */}
-                <FormField
-                  control={form.control}
-                  name="isOnSale"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">On Sale</FormLabel>
-                        <FormDescription>Mark as sale item</FormDescription>
-                      </div>
-                      <FormControl>
-                        <input
-                          type="checkbox"
-                          checked={field.value}
-                          onChange={field.onChange}
-                          className="h-4 w-4"
-                        />
-                      </FormControl>
                     </FormItem>
                   )}
                 />
@@ -726,8 +520,6 @@ export default function CreateProductPage() {
                     form.reset();
                     setUploadedFiles([]);
                     setImagePreviews([]);
-                    setTags([]);
-                    setSpecifications([{ key: "", value: "" }]);
                   }}
                   disabled={loading}
                 >

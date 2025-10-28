@@ -1,145 +1,126 @@
-import { ShoppingCart, Star, StarHalf } from "lucide-react";
-import Image from "next/image";
-import { Button } from "./ui/button";
+"use client";
+
 import { Doc } from "@/convex/_generated/dataModel";
-import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
-import { useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
+import { ShoppingCart } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
+import { Button } from "./ui/button";
+import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 
-const ProductCard = ({ product }: { product: Doc<"products"> }) => {
-  const plugin = useRef(
-    Autoplay({ delay: 600000, stopOnInteraction: false }) // 10min interval
-  );
-  // Function to render stars based on rating
-  const renderStars = (rating: number, reviewCount: number) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
+const ProductCard = ({ product,index }: { product: Doc<"products">,index:number }) => {
+  const randomDelay = Math.floor(Math.random() * (15000 - 5000 + 1)) + 5000; // Random delay between 5 and 15 seconds
+  const plugin = useRef(Autoplay({ delay: randomDelay , stopOnInteraction: true }));
 
-    // Full stars
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-      );
-    }
+ 
+  const isNew =
+    product._creationTime &&
+    product._creationTime * 1000 > Date.now() - 7 * 24 * 60 * 60 * 1000;
 
-    // Half star
-    if (hasHalfStar) {
-      stars.push(
-        <StarHalf
-          key="half"
-          className="w-4 h-4 fill-yellow-400 text-yellow-400"
-        />
-      );
-    }
-
-    // Empty stars
-    const emptyStars = 5 - Math.ceil(rating);
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<Star key={`empty-${i}`} className="w-4 h-4 text-gray-300" />);
-    }
-
-    return (
-      <div className="flex items-center gap-1">
-        <div className="flex">{stars}</div>
-        <span className="text-sm text-gray-600 ml-1">({reviewCount})</span>
-      </div>
-    );
-  };
+  const hasDiscount =
+    product.originalPrice && product.discountPrice < product.originalPrice;
 
   return (
     <Link
       href={`/product/${product._id}`}
-      className="bg-white rounded-lg shadow-sm shadow-blue-100 cursor-pointer border border-gray-100 p-4 py-6 hover:shadow-md transition-shadow duration-200 group relative"
+      className="group relative flex flex-col bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
     >
-      {/* Product Image */}
-      <div>
+      {/* Image Carousel - Fixed aspect ratio container */}
+      <div className="relative w-full  aspect-square  overflow-hidden">
         <Carousel
-          className="w-full h-full  relative"
-          opts={{
-            align: "start",
-            loop: true,
-          }}
+          className="w-full h-full"
+          opts={{ loop: true }}
           plugins={[plugin.current]}
         >
-          {/* gap-4 gives space between items */}
-          <CarouselContent className="">
-            {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              //@ts-ignore
-              product.imageUrls.map((image, index) => (
-                <CarouselItem
-                  key={index}
-                  className="aspect-square relative rounded-lg overflow-hidden group"
-                >
+          <CarouselContent className="h-full ">
+            {/* @ts-ignore */}
+            {product.imageUrls?.map((image: string, index: number) => (
+              <CarouselItem
+                key={index}
+                className="relative w-full h-full flex items-center justify-center"
+              >
+                <div className="relative w-full h-[300px]">
+                  {/* Blurred background image */}
                   <Image
                     src={image}
-                    alt={image}
+                    alt={product.name}
                     fill
-                    className="object-contain group-hover:scale-105 transition-transform duration-200"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 33vw"
+                    className="object-cover scale-110 blur-lg"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                </CarouselItem>
-              ))
-            }
+                  {/* Foreground product image */}
+                  <Image
+                    src={image}
+                    alt={product.name}
+                    fill
+                    className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
           </CarouselContent>
-
-          {/* Navigation buttons */}
-          {/* <CarouselPrevious className="hidden sm:flex -left-12 lg:-left-16" />
-          <CarouselNext className="hidden sm:flex -right-12 lg:-right-16" /> */}
         </Carousel>
+
+        {isNew && (
+          <span className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow z-10">
+            NEW
+          </span>
+        )}
+
+        {/* {hasDiscount && (
+          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow z-10">
+            -{Math.round(
+              (1 - product.discountPrice / product.originalPrice) * 100
+            )}
+            %
+          </span>
+        )} */}
       </div>
 
-      {product.isNew && (
-        <span className="absolute top-2 right-2 bg-blue-500 text-sm font-medium text-gray-900 px-2 rounded-full">
-          New
-        </span>
-      )}
-
-      <Button className="absolute cursor-pointer top-1/2 right-2 bg-blue-500 text-sm font-medium text-gray-900 p-2 rounded-full group">
-        <ShoppingCart className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-200" />
-      </Button>
-
-      <div className="flex flex-col pb-4 space-y-2">
-        <h3 className="text-xl font-semibold text-gray-900 h-full line-clamp-2 tracking-tight hover:text-blue-600 transition-colors">
-          {product.name.length > 60
-            ? `${product.name.substring(0, 1).toUpperCase()}${product.name.substring(1, 60)}...`
-            : `${product.name.substring(0, 1).toUpperCase()}${product.name.substring(1)}`}
+      {/* Info Section */}
+      <div className="p-4 flex flex-col flex-grow">
+        <h3 className="font-semibold text-gray-900 text-lg line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
+          {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
         </h3>
 
-        <p className="text-base pb-1 text-gray-500 line-clamp-2">
+        <p className="text-sm text-gray-500 line-clamp-2 mt-1">
           {product.description}
         </p>
 
-        {/* Rating */}
-        <div className="mb-3">
-          {renderStars(product.rating || 0, product.reviewCount || 0)}
-        </div>
+        {/* Ratings */}
+        {/* {product.rating && (
+          <div className="mt-2">{renderStars(product.rating, product.reviewCount || 0)}</div>
+        )} */}
 
         {/* Price Section */}
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg font-bold text-gray-900">
-            {product.price.toLocaleString()} Rwf
-          </span>
-        </div>
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="text-xl font-bold text-gray-900">
+              {product.discountPrice.toLocaleString()} RWF
+            </span>
+            {hasDiscount && (
+              <span className="text-sm text-gray-400 line-through">
+                {product.originalPrice?.toLocaleString()} RWF
+              </span>
+            )}
+          </div>
 
-        {/* Original Price (if used) */}
-        <div className="w-full flex items-center justify-end pb-2">
-          {product.originalPrice && (
-            <div className="text-sm text-red-500 line-through">
-              {product.originalPrice.toLocaleString()} Rwf
-            </div>
-          )}
+          <Button
+            size="icon"
+            className="rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-transform hover:scale-105"
+          >
+            <ShoppingCart className="h-5 w-5" />
+          </Button>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 py-2">
-        <div className="flex justify-center mt-4 items-center">
-          <Button className="bg-gradient-to-b from-blue-50 via-blue-100 to-blue-200  px-6  rounded-full text-blue-950 font-bold hover:bg-gradient-to-r hover:from-white hover:to-blue-200 transition-all w-[90%] py-4 hover:scale-110 cursor-pointer">
-            Shop now
-          </Button>
-        </div>
+      {/* Bottom CTA */}
+      <div className="border-t px-4 py-3 bg-gray-50 text-center">
+        <Button className="w-full bg-blue-600 hover:bg-blue-700 rounded-full font-semibold py-2 transition-transform hover:scale-[1.02]">
+          Shop Now
+        </Button>
       </div>
     </Link>
   );

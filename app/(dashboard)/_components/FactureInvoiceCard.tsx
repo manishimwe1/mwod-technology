@@ -97,8 +97,8 @@ export const FactureInvoiceCard: React.FC<FactureInvoiceCardProps> = ({
       const itemData = [
         item.quantity,
         item.description,
-        item.unitPrice.toFixed(2),
-        item.totalPrice.toFixed(2),
+        item.unitPrice.toLocaleString(),
+        item.totalPrice.toLocaleString(),
       ];
       tableRows.push(itemData);
     });
@@ -138,7 +138,7 @@ export const FactureInvoiceCard: React.FC<FactureInvoiceCardProps> = ({
       0
     );
     doc.setFontSize(12);
-    doc.text(`Total: ${totalAmount.toFixed(2)} Rwf`, rightMargin, y, {
+    doc.text(`Total: ${totalAmount.toLocaleString()} Rwf`, rightMargin, y, {
       align: "right",
     });
     y += 20;
@@ -244,10 +244,10 @@ export const FactureInvoiceCard: React.FC<FactureInvoiceCardProps> = ({
                     {item.description}
                   </td>
                   <td className="px-4 py-2 border border-gray-300">
-                    {item.unitPrice.toFixed(2)}
+                    {item.unitPrice.toLocaleString()}
                   </td>
                   <td className="px-4 py-2 border border-gray-300">
-                    {item.totalPrice.toFixed(2)}
+                    {item.totalPrice.toLocaleString()} Rfw
                   </td>
                 </tr>
               ))}
@@ -261,7 +261,7 @@ export const FactureInvoiceCard: React.FC<FactureInvoiceCardProps> = ({
                 <td className="px-4 py-2 border border-gray-300">
                   {facture.items
                     .reduce((sum, item) => sum + item.totalPrice, 0)
-                    .toFixed(2)}
+                    .toLocaleString()} Rfw
                 </td>
               </tr>
             </tbody>

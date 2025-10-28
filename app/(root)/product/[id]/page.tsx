@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic"; // 👈 prevent prerender crash
+
 import Loading from "@/components/Loading";
 import {
   Carousel,
@@ -23,17 +25,17 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
 
-  const plugin = useRef(
-    Autoplay({ delay: 600000, stopOnInteraction: false }) // 10min interval
-  );
+  // ✅ Autoplay plugin (safe ref)
+  const plugin = useRef(Autoplay({ delay: 600000, stopOnInteraction: false }));
 
+  // ✅ Convex product query (safe runtime only)
   const product = useQuery(api.product.getProduct, {
     id: params.id as Id<"products">,
   });
 
-  if (!product) {
-    return <Loading title="Loading product details..." />;
-  }
+  // ✅ Loading and null guards
+  if (product === undefined) return <Loading title="Loading product details..." />;
+  if (product === null) return <div className="p-10 text-center">Product not found.</div>;
 
   return (
     <div className="min-h-screen bg-white">
@@ -49,30 +51,28 @@ const ProductDetailPage = () => {
         </span>
       </div>
 
+      {/* Product Section */}
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Images */}
+          {/* Left: Images */}
           <div className="space-y-4">
-            <div className="flex-1 relative">
+            <div className="relative">
               {/* Stock Badge */}
               <div className="bg-red-600 text-white text-xs font-bold px-3 py-1 absolute top-4 left-4 z-10 rounded">
                 {product.stock} IN STOCK
               </div>
 
-              {/* Image Carousel with Zoom */}
+              {/* Image Carousel */}
               <Carousel
                 className="w-full h-full relative"
-                opts={{
-                  align: "start",
-                  loop: true,
-                }}
+                opts={{ align: "start", loop: true }}
                 plugins={[plugin.current]}
               >
                 <CarouselContent>
-                  {product?.imageUrls?.map((image, index) => (
+                  {product.imageUrls?.map((image, index) => (
                     <CarouselItem
                       key={index}
-                      className="aspect-square relative rounded-lg overflow-hidden group"
+                      className="aspect-square relative rounded-lg overflow-hidden"
                     >
                       <Zoom>
                         <Image
@@ -95,25 +95,24 @@ const ProductDetailPage = () => {
             </div>
           </div>
 
-          {/* Right Column - Product Details */}
+          {/* Right: Details */}
           <div className="space-y-6">
-            {/* Title */}
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900 py-4 line-clamp-2 leading-5 tracking-tight hover:text-blue-600 transition-colors">
+              <h1 className="text-2xl font-semibold text-gray-900 py-4">
                 {product.name}
               </h1>
 
               {/* Specifications */}
-              <div className="flex flex-wrap gap-2 items-start justify-start">
+              {/* <div className="flex flex-wrap gap-2">
                 {product.specifications?.map((spec) => (
                   <p className="text-gray-600 mt-2" key={spec.key}>
                     <span className="font-bold">{spec.key}:</span> {spec.value}
                   </p>
                 ))}
-              </div>
+              </div> */}
 
               {/* Description */}
-              <div className="flex items-start text-justify text-lg py-2">
+              <div className="text-gray-700 text-justify py-2 text-sm leading-relaxed">
                 {product.description}
               </div>
             </div>
@@ -125,19 +124,14 @@ const ProductDetailPage = () => {
                   <span className="text-blue-600 font-bold text-sm">
                     {product.createdByName
                       ?.split(" ")
-                      .filter(
-                        (_, index, arr) =>
-                          index === 0 || index === arr.length - 1
-                      )
-                      .map((name) => name.charAt(0))
+                      .filter((_, i, arr) => i === 0 || i === arr.length - 1)
+                      .map((n) => n.charAt(0))
                       .join("")}
                   </span>
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold">
-                      {product.createdByName}
-                    </span>
+                    <span className="font-semibold">{product.createdByName}</span>
                     <span className="text-gray-500 text-sm">seller</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
@@ -158,51 +152,21 @@ const ProductDetailPage = () => {
             {/* Price Section */}
             <div className="space-y-2">
               <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-bold">
-                  {product.price.toLocaleString()}
-                </span>
-                <span className="text-gray-500 text-sm">
-                  {product.currency}
-                </span>
+                <span className="text-4xl font-bold">{product.discountPrice.toLocaleString()}</span>
+                <span className="text-gray-500 text-sm">Rwf</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500 line-through">
-                  Was {product?.originalPrice?.toLocaleString()}{" "}
-                  {product.currency}
-                </span>
-                <span className="text-red-600 font-semibold">
-                  (
-                  {(
-                    ((Number(product?.originalPrice) - product.price) * 100) /
-                    Number(product?.originalPrice)
-                  ).toFixed(0) + "%"}
-                  )
-                </span>
-                <button className="text-blue-600 hover:underline flex items-center gap-1">
-                  <Info className="w-4 h-4" />
-                  Price details
-                </button>
-              </div>
-            </div>
-
-            {/* Condition */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-8">
-                <span className="text-gray-700">Condition:</span>
+              {product.originalPrice && (
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold">Excellent - Refurbished</span>
-                  <Info className="w-4 h-4 text-gray-500" />
+                  <span className="text-gray-500 line-through">
+                    Was {product.originalPrice.toLocaleString()} Rwf
+                  </span>
+                  <span className="text-red-600 font-semibold">
+                    ({(((Number(product.originalPrice) - product.discountPrice) * 100) /
+                      Number(product.originalPrice)
+                    ).toFixed(0) + "%"})
+                  </span>
                 </div>
-              </div>
-              <div className="bg-gray-50 p-3 rounded-lg text-sm">
-                <p className="italic">
-                  {product?.name}, Passed Full Sector-by-Sector Test, 0 Bad
-                  Sector, 0 Power Hours, {product?.warranty} months Warranty
-                </p>
-                <button className="text-blue-600 underline text-sm mt-1">
-                  ... Read more
-                </button>
-              </div>
+              )}
             </div>
 
             {/* Quantity */}
@@ -222,7 +186,7 @@ const ProductDetailPage = () => {
               </div>
             </div>
 
-            {/* Buy Button */}
+            {/* Action Buttons */}
             <div className="space-y-3 pt-4">
               <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full text-lg transition">
                 Buy It Now

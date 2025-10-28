@@ -50,6 +50,7 @@ export default function RootLayout({
         {/* ... existing head content ... */}
       </head>
       <body
+        suppressHydrationWarning
         className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}
       >
         <ClerkProvider>
