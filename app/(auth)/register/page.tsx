@@ -51,7 +51,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
   const [errorInRegister, setErrorInRegister] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const registerUser = useAction(api.user.registerUser);
+  const registerUser = useAction(api.users.registerUser);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -74,8 +74,7 @@ export default function SignIn() {
       password: values.password,
       contact: values.contact,
       position: "",
-      role: undefined,
-      status: "pending", // <-- Add this line
+      role: process.env.ADMIN_EMAIL === values.email ? "admin" : "client",
     });
 
     if (error !== null) {
