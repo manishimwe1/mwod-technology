@@ -12,7 +12,6 @@ const protectedRoutes = [
 const excludedRoutes = [
   "/login",
   "/register",
-  "/onboarding",
   "/api",
   "/_next",
   "/favicon.ico",
@@ -57,51 +56,6 @@ export async function middleware(request: NextRequest) {
         // console.log("Token found but no role, redirecting to onboarding");
         const url = request.nextUrl.clone();
         url.pathname = "/onboarding";
-        return NextResponse.redirect(url);
-      }
-
-      // Check user status
-      if (token.status === "pending") {
-        // console.log("User status is pending, redirecting to waiting-approval");
-        const url = request.nextUrl.clone();
-        url.pathname = "/waiting-approval";
-        return NextResponse.redirect(url);
-      }
-
-      if (token.status === "reject") {
-        // console.log("User status is rejected, redirecting to rejected");
-        const url = request.nextUrl.clone();
-        url.pathname = "/rejected";
-        return NextResponse.redirect(url);
-      }
-
-      if (token.status !== "approved") {
-        // console.log("User status is not approved, redirecting to login");
-        const url = request.nextUrl.clone();
-        url.pathname = "/login";
-        return NextResponse.redirect(url);
-      }
-
-      // Optional: Check for specific roles for specific routes
-      if (pathname.startsWith("/settings") && token.role !== "admin" && token.role !== "accountant") {
-        // console.log(
-        //   "Non-admin user trying to access settings, redirecting to dashboard",
-        // );
-        const url = request.nextUrl.clone();
-        url.pathname = "/";
-        return NextResponse.redirect(url);
-      }
-
-      // Redirect clients away from admin routes to client dashboard
-      if (
-        protectedRoutes.some((route) => pathname.startsWith(route)) &&
-        token.role === "client"
-      ) {
-        // console.log(
-        //   "Client trying to access admin route, redirecting to client dashboard",
-        // );
-        const url = request.nextUrl.clone();
-        url.pathname = "/client-dashboard";
         return NextResponse.redirect(url);
       }
 

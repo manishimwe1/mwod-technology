@@ -1,9 +1,13 @@
 // import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
+import UserButton from "./userButton";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export function SiteHeader() {
+  const session = useSession();
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
@@ -24,12 +28,17 @@ export function SiteHeader() {
               GitHub
             </a>
           </Button> */}
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
+          {
+            session.status === "authenticated" && session.data?.user.email ? (
+              <UserButton />
+            ):(
+              <Link href="/login">
+                <Button variant="ghost" size="sm" className="hidden sm:flex">
+                Login
+              </Button>
+              </Link>
+            )
+          }
         </div>
       </div>
     </header>
