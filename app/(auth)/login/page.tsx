@@ -57,13 +57,6 @@ function LoginPage() {
         redirect("/dashboard"); // Admin or other roles
       }
     }
-    // Optionally, fallback after 2 seconds if session is still not available
-    if (!session?.user || status !== "authenticated") {
-      const timeout = setTimeout(() => {
-        window.location.href = "/"; // fallback
-      }, 2000);
-      return () => clearTimeout(timeout);
-    }
   }, [status, session]);
 
   async function onSubmit(values: FormValues) {
