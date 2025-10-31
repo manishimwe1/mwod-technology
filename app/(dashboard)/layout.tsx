@@ -1,6 +1,7 @@
 import ClientLayout from "@/components/ClientWrapper";
 import type { Metadata } from "next";
 import "../globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "EasyFix - Electronics Repair & Shop",
@@ -13,10 +14,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
-    <main suppressHydrationWarning={true}>
-      <ClientLayout>{children}</ClientLayout>
-    </main>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <main suppressHydrationWarning={true}>
+        <ClientLayout>{children}</ClientLayout>
+      </main>
+    </ThemeProvider>
   );
 }

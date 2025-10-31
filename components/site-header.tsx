@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import UserButton from "./userButton";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { ModeToggle } from "./DarkMode";
 
 export function SiteHeader() {
   const session = useSession();
@@ -28,6 +29,7 @@ export function SiteHeader() {
               GitHub
             </a>
           </Button> */}
+          <ModeToggle />
           {
             session.status === "authenticated" && session.data?.user.email ? (
               <UserButton />

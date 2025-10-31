@@ -1,11 +1,11 @@
+import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { Toaster } from "@/components/ui/sonner";
-import NextTopLoader from "nextjs-toploader";
-import { SessionProvider } from "next-auth/react";
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import { Poppins } from "next/font/google";
 import Script from "next/script";
+import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
-import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -91,7 +91,8 @@ export default function RootLayout({
         <SessionProvider>
           <ConvexClientProvider>
             <NextTopLoader />
-            {children}
+            
+              {children}
             <Toaster />
           </ConvexClientProvider>
         </SessionProvider>

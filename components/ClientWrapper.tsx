@@ -15,7 +15,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
-        <main className="min-h-screen flex flex-col justify-center w-full">
+        <main className="min-h-screen flex flex-col justify-start py-10 items-start w-full">
           {children}
         </main>
       </SidebarInset>

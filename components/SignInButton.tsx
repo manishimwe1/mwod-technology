@@ -10,7 +10,7 @@ const SignInButton = () => {
         <Button
           type="submit"
           variant="outline"
-          className="h-12 cursor-pointer rounded-xl border-slate-200 hover:bg-slate-50 transition-colors"
+          className="h-12 w-full cursor-pointer rounded-xl bg-white dark:bg-stone-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
         >
           <Image
             src={"/google.svg"}
@@ -19,7 +19,7 @@ const SignInButton = () => {
             width={3}
             height={3}
           />
-          Signin with Google
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Sign in with Google</p>
         </Button>
       </form>
     </div>

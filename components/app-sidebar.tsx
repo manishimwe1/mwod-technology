@@ -28,6 +28,7 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { PackageOpen, PackageOpenIcon } from "lucide-react";
 
 const data = {
   user: {
@@ -57,9 +58,9 @@ const data = {
       icon: IconChartBar,
     },
     {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
+      title: "Product",
+      url: "/dashboard/product",
+      icon: PackageOpen,
     },
     {
       title: "Team",
