@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 
 const GenerateQrcode = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const qrData = `https://mozze-project.vercel.app/`; // You can make this a prop or state if you want dynamic URLs
+const qrData = `https://common-vision-cooperative.vercel.app/login?qrCode=true` // You can make this a prop or state if you want dynamic URLs
   const logoSrc = "/convex.svg"; // Path to your logo
 
   const drawPreview = React.useCallback(async () => {
