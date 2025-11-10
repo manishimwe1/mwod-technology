@@ -20,6 +20,7 @@
 import HeroSection from '@/components/Hero';
 import SocialProof from '@/components/SocialProof';
 import TrendingProducts from '@/components/TrendingProducts';
+import TrustBadges from '@/components/TrustBadges';
 import { Button } from '@/components/ui/button';
 import { Lock, MessageCircle, Phone, RotateCcw, ShieldCheck, Sparkles, Truck, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -60,32 +61,13 @@ export default function EnhancedHomePage() {
       <HeroSection/>
 
       {/* Trust Badges */}
-      <section className="bg-gray-50 py-8 border-y">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: ShieldCheck, title: 'Verified Sellers', desc: 'All sellers verified' },
-              { icon: Truck, title: 'Fast Delivery', desc: 'Same day in Kigali' },
-              { icon: RotateCcw, title: '7-Day Returns', desc: 'Easy returns policy' },
-              { icon: Lock, title: 'Secure Payment', desc: '100% protected' }
-            ].map((badge, idx) => (
-              <div key={idx} className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-                <div className="bg-blue-100 p-3 rounded-lg">
-                  <badge.icon className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-900 text-sm">{badge.title}</div>
-                  <div className="text-xs text-gray-600">{badge.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className='hidden md:block'>
+        <TrustBadges/>
+      </div>
 
 
       {/* Trending Products */}
-      <section className="py-16 lg:py-20 px-4 bg-gray-50">
+      <section className="py-8 lg:py-20 px-4 bg-gray-50">
         <TrendingProducts/>
         <div className="max-w-7xl mx-auto">
           
@@ -113,6 +95,10 @@ export default function EnhancedHomePage() {
           </div>
         </div>
       </section>
+
+       <div className='inline-block md:hidden w-full justify-center items-center'>
+        <TrustBadges/>
+      </div>
 
       {/* Exit Intent Popup */}
       {showExitIntent && (

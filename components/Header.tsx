@@ -29,10 +29,10 @@ const Header = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-12 lg:h-16">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center relative gap-2 h-14 w-14">
+            <div className="flex items-center justify-center relative gap-2 h-10 lg:h-14 w-10 lg:w-14">
               <Link href="/" className="text-2xl font-bold text-green-600">
                 <Image src="/logo.png" alt="logo" fill priority />
               </Link>
@@ -92,6 +92,7 @@ const Header = () => {
               className="p-2 hover:bg-gray-100 cursor-pointer rounded-lg transition"
               aria-label="Account"
               variant={'secondary'}
+              size={'sm'}
             >
               <svg
                 className="w-6 h-6 text-gray-700"
@@ -111,6 +112,7 @@ const Header = () => {
               className="relative p-2 hover:bg-gray-100 cursor-pointer rounded-lg transition"
               aria-label="Shopping cart"
               variant={'secondary'}
+              size={'sm'}
             >
               <ShoppingCart className="w-6 h-6 text-gray-700" />
               <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -122,6 +124,7 @@ const Header = () => {
               className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition"
               onClick={() => setShowMobileMenu(!showMobileMenu)}
               aria-label="Menu"
+              size={'sm'}
             >
               {showMobileMenu ? (
                 <X className="w-6 h-6" />

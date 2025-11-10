@@ -14,7 +14,7 @@ const HeroSection = () => {
   const hotFirstImage = hotProducts?.[0]?.imageUrls?.[0] ?? "";
   const dealFirstImage = dealsProducts?.[0]?.imageUrls?.[0] ?? "";
   return (
-    <section className="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-16 lg:py-24">
+    <section className="hidden md:inline-block bg-gradient-to-br from-blue-50 via-white to-purple-50 py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
