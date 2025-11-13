@@ -148,7 +148,7 @@ export default function EnhancedHomePage() {
       )}
 
       {/* Mobile Contact Buttons */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex gap-2 z-40 shadow-lg">
+      {/* <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex gap-2 z-40 shadow-lg">
         <a
           href="tel:+250788123456"
           className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2"
@@ -163,7 +163,7 @@ export default function EnhancedHomePage() {
           <MessageCircle className="w-4 h-4" />
           WhatsApp
         </a>
-      </div>
+      </div> */}
     </div>
   );
 }
