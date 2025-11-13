@@ -29,7 +29,7 @@ export default defineSchema({
     resetToken: v.optional(v.string()),
     resetTokenExpiry: v.optional(v.number()),
   }).index("by_email", ["email"]),
-  
+
   products: defineTable({
     name: v.string(),
     description: v.string(),
@@ -86,5 +86,14 @@ export default defineSchema({
     totalAmount: v.number(),
     date: v.number(),
     phone: v.optional(v.number()),
+  }),
+
+  visits: defineTable({
+    userId: v.optional(v.string()),
+    anonymousId: v.optional(v.string()),
+    pathsVisited: v.array(v.string()),
+    userAgent: v.optional(v.string()),
+    country: v.optional(v.string()),
+    lastVisitAt: v.number(),
   }),
 });

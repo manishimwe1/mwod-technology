@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as analytics from "../analytics.js";
 import type * as facture from "../facture.js";
 import type * as http from "../http.js";
 import type * as invoice from "../invoice.js";
@@ -29,6 +30,7 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  analytics: typeof analytics;
   facture: typeof facture;
   http: typeof http;
   invoice: typeof invoice;

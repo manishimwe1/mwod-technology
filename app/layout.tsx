@@ -7,6 +7,7 @@ import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
+import AnalyticsWrapper from "@/components/AnalyticWrapper";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -95,6 +96,7 @@ export default function RootLayout({
             
               {children}
                <Analytics />
+               <AnalyticsWrapper />
             <Toaster />
           </ConvexClientProvider>
         </SessionProvider>
