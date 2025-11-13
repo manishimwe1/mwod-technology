@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { Suspense } from "react";
 import SignInButton from "@/components/SignInButton";
+import Image from "next/image"; // Added import for Image component
 
 function LoginPage() {
   const { data: session, status } = useSession();
@@ -28,9 +29,16 @@ function LoginPage() {
   if (status === "loading") {
     return (
       <section className="flex items-center justify-center w-full h-screen bg-gray-900">
-        <span className="flex items-center gap-2 justify-center text-white">
+        <span className="flex flex-col items-center gap-4 justify-center text-white">
+          <Image
+            src="/logo.png" // Path to your logo image
+            alt="Logo"
+            width={80}
+            height={80}
+            className="animate-spin"
+          />
+          <h2 className="text-xl font-semibold">Authenticating...</h2>
           <Loader2 className="animate-spin h-5 w-5" />
-          Loading...
         </span>
       </section>
     );
