@@ -44,7 +44,7 @@ const LeftProductDetailsImage = ({ product }: { product: Doc<"products"> }) => {
                 <ZoomImage
                   src={image!}
                   alt={product.name}
-                  className="object-contain"
+                  className="object-cover"
                 />
               </CarouselItem>
             ))}

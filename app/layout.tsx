@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     "laptops",
     "accessories",
   ],
-  authors: [{ name: "Mozze" }],
+  authors: [{ name: "emino" }],
   creator: "Mozze",
   publisher: "Mozze",
   openGraph: {
@@ -59,6 +59,9 @@ export const metadata: Metadata = {
       "Your one-stop destination for electronics repair services and new device purchases. Expert repairs, great deals, and quality electronics.",
     // images: ["https://easyfix.com/twitter-image.jpg"], // Replace with your actual Twitter image
     creator: "@eminodev", // Replace with your Twitter handle
+    images:[
+      "/logo.png"
+    ]
   },
   icons: ["/logo.png"],
 };

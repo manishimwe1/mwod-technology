@@ -65,7 +65,7 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
                     src={image}
                     alt={product.name}
                     fill
-                    className="object-contain p-4 group-hover:scale-105 transition-transform duration-300 rounder-lg "
+                    className="object-cover p-4 group-hover:scale-105 transition-transform duration-300 rounded-lg "
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
