@@ -39,8 +39,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     // Authorization check: if user is not an admin, redirect to home page
     if (user?.role !== 'admin') {
-      router.push('/');
+      router.push('/dashboard');
       return;
+    }else{
+      router.push('/')
     }
   }, [session, user, router]);
 
