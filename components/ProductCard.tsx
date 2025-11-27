@@ -1,13 +1,17 @@
 "use client";
 
-import { Doc } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import Autoplay from "embla-carousel-autoplay";
 import { Award, Eye, Flame, HeartIcon, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useSession } from "next-auth/react";
 
 const ProductCard = ({ product }: { product: Doc<"products"> }) => {
   const randomDelay = Math.floor(Math.random() * (15000 - 5000 + 1)) + 5000; // Random delay between 5 and 15 seconds
@@ -15,9 +19,59 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
     Autoplay({ delay: randomDelay, stopOnInteraction: true })
   );
 
+  const session = useSession();
+  const router = useRouter();
+
+  const user = useQuery(
+    api.users.getUserByEmail,
+    session?.data?.user?.email ? { email: session.data.user.email } : "skip"
+  );
+  const addWishlist = useMutation(api.wishlist.add);
+  const removeWishlist = useMutation(api.wishlist.remove);
+  const isProductInWishlist = useQuery(
+    api.wishlist.isProductInWishlist,
+    user ? { productId: product._id, userId: user._id as Id<"user"> } : "skip"
+  );
+
+  const addCart = useMutation(api.cart.add);
+
+  const handleWishlistClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    if (isProductInWishlist) {
+      await removeWishlist({
+        productId: product._id,
+        userId: user._id as Id<"user">,
+      });
+    } else {
+      await addWishlist({
+        productId: product._id,
+        userId: user._id as Id<"user">,
+      });
+    }
+  };
+
+  const handleAddToCart = async (productId:Id<'products'>) => {
+   // Prevent event from bubbling up to the Link component
+   console.log('here',user);
+   
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    await addCart({
+      productId,
+      userId: user._id as Id<"user">,
+      quantity: 1,
+    });
+  };
+
   return (
-    <Link
-      href={`/product/${product._id}`}
+    <div
       className="
     group relative flex flex-col
     bg-white rounded-3xl 
@@ -32,7 +86,7 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
       {/* Image Carousel - Fixed aspect ratio container */}
       <div
         className="
-    relative w-full aspect-square overflow-hidden 
+    relative w-full h-full lg:aspect-square overflow-hidden 
     bg-gradient-to-b from-gray-50 to-white
     rounded-t-3xl
     border-b border-gray-100
@@ -49,9 +103,12 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
             {product.imageUrls?.map((image: string, index: number) => (
               <CarouselItem
                 key={index}
-                className="relative w-full h-full flex items-center justify-center "
+                className="relative w-full h-full flex items-center justify-center bg-red-400 "
               >
-                <div className="relative w-full h-[300px] rounded-md">
+                <Link
+                  href={`/product/${product._id}`}
+                  className="relative w-full h-[300px] rounded-md"
+                >
                   {/* Blurred background image */}
                   <Image
                     src={image}
@@ -68,7 +125,7 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
                     className="object-cover p-4 group-hover:scale-105 transition-transform duration-300 rounded-lg "
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                </div>
+                </Link>
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -90,8 +147,15 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
         <button
           className="absolute cursor-pointer top-3 right-3 z-10 bg-white bg-opacity-90 hover:bg-opacity-100 p-2 rounded-full shadow-md transition"
           aria-label="Add to wishlist"
+          onClick={handleWishlistClick}
         >
-          <HeartIcon className="w-4 h-4 text-gray-700 hover:text-red-500 hover:fill-red-500 transition" />
+          <HeartIcon
+            className={`w-4 h-4 transition ${
+              isProductInWishlist
+                ? "text-red-500 fill-red-500"
+                : "text-gray-700 hover:text-red-500 hover:fill-red-500"
+            }`}
+          />
         </button>
 
         {/* Views Badge */}
@@ -104,7 +168,7 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
       </div>
 
       {/* Info Section */}
-      <div className="p-5">
+      <Link href={`/product/${product._id}`} className="p-5">
         {/* Rating */}
         <div className="flex items-center gap-2 mb-3">
           <div className="flex">
@@ -158,20 +222,23 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
         )}
 
         {/* Actions */}
-        <div className="flex gap-2">
-          <button className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 text-sm">
-            <ShoppingCart className="w-4 h-4" />
-            Add to Cart
-          </button>
-          {/* <button
+      </Link>
+      <div className="flex gap-2">
+        <button
+          className="flex-1 bg-blue-600 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 text-sm"
+          onClick={()=>handleAddToCart(product._id)}
+        >
+          <ShoppingCart className="w-4 h-4" />
+          Add to Cart
+        </button>
+        {/* <button
             className="bg-gray-100 hover:bg-gray-200 p-3 rounded-lg transition"
             aria-label="Quick view"
           >
-            <Eye className="w-5 h-5 text-gray-700" />
+          <Eye className="w-5 h-5 text-gray-700" />
           </button> */}
-        </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

@@ -141,17 +141,19 @@ const Header = () => {
                 />
               </svg>
             </Button> */}
-              <Button
-                className="relative p-2 hover:bg-gray-100 cursor-pointer rounded-lg transition"
-                aria-label="Shopping cart"
-                variant={"secondary"}
-                size={"sm"}
-              >
-                <ShoppingCart className="w-6 h-6 text-gray-700" />
-                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                  3
-                </span>
-              </Button>
+              <Link href={"/cart"} prefetch>
+                <Button
+                  className="relative p-2 hover:bg-gray-100 cursor-pointer rounded-lg transition"
+                  aria-label="Shopping cart"
+                  variant={"secondary"}
+                  size={"sm"}
+                >
+                  <ShoppingCart className="w-6 h-6 text-gray-700" />
+                  <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    3
+                  </span>
+                </Button>
+              </Link>
               <Button
                 variant={"secondary"}
                 className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition"

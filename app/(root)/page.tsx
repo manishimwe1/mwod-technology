@@ -36,7 +36,7 @@ export default function EnhancedHomePage() {
   // Exit intent detection
   useEffect(() => {
     let hasShownPopup = false;
-    const handleMouseLeave = (e) => {
+    const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY < 10 && !hasShownPopup) {
         hasShownPopup = true;
         setShowExitIntent(true);
@@ -46,7 +46,7 @@ export default function EnhancedHomePage() {
     return () => document.removeEventListener('mouseleave', handleMouseLeave);
   }, []);
 
-  const handleEmailSubmit = (e) => {
+  const handleEmailSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert(`Welcome discount sent to ${email}!`);
     setShowExitIntent(false);

@@ -33,8 +33,8 @@ export const metadata: Metadata = {
     "accessories",
   ],
   authors: [{ name: "emino" }],
-  creator: "Mozze",
-  publisher: "Mozze",
+  creator: "easyfix",
+  publisher: "easyfix",
   openGraph: {
     title: "EasyFix - Sell and Buy some of electronics",
     description:

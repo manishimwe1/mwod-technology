@@ -23,7 +23,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { brands, categories } from "@/constants";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-// import { useStoreUserEffect } from "@/lib/hooks/useStoreUserEffect";
 import { productSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "convex/react";

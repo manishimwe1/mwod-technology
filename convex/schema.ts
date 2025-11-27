@@ -101,4 +101,20 @@ export default defineSchema({
     country: v.optional(v.string()),
     lastVisitAt: v.number(),
   }),
+
+  wishlist: defineTable({
+    userId: v.id("user"),
+    productId: v.id("products"),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_productId", ["productId"])
+    .index("by_userId_productId", ["userId", "productId"]),
+
+  cart: defineTable({
+    userId: v.id("user"),
+    productId: v.id("products"),
+    quantity: v.number(),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_userId_productId", ["userId", "productId"]),
 });
