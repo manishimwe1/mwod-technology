@@ -15,6 +15,7 @@ import type * as http from "../http.js";
 import type * as invoice from "../invoice.js";
 import type * as ledger from "../ledger.js";
 import type * as product from "../product.js";
+import type * as selledProduct from "../selledProduct.js";
 import type * as users from "../users.js";
 import type * as wishlist from "../wishlist.js";
 
@@ -40,6 +41,7 @@ declare const fullApi: ApiFromModules<{
   invoice: typeof invoice;
   ledger: typeof ledger;
   product: typeof product;
+  selledProduct: typeof selledProduct;
   users: typeof users;
   wishlist: typeof wishlist;
 }>;

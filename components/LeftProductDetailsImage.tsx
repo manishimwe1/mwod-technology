@@ -31,7 +31,7 @@ const LeftProductDetailsImage = ({ product }: { product: Doc<"products"> }) => {
 
         {/* Image Carousel */}
         <Carousel
-          className="w-full h-[500px] relative"
+          className="w-full h-[400px] md:h-[500px] relative"
           opts={{ align: "start", loop: true }}
           plugins={[plugin.current]}
         >

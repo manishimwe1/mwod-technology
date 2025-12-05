@@ -77,7 +77,7 @@ export default function EnhancedHomePage() {
       <SocialProof/>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-blue-600 to-purple-600">
+      {/* <section className="py-16 px-4 bg-gradient-to-r from-blue-600 to-purple-600">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
             Ready to Buy or Sell?
@@ -94,7 +94,7 @@ export default function EnhancedHomePage() {
             </Button>
           </div>
         </div>
-      </section>
+      </section> */}
 
        <div className='inline-block md:hidden w-full justify-center items-center'>
         <TrustBadges/>

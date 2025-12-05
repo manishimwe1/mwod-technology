@@ -2,6 +2,7 @@ import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { ArrowRight, ChevronRight, Phone, Sparkles } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const HeroSection = () => {
@@ -52,10 +53,10 @@ const HeroSection = () => {
                 Browse Products
                 <ChevronRight className="w-5 h-5" />
               </button>
-              <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:border-gray-400 transition flex items-center justify-center gap-2">
+              <Link href='/sell' className="border-2 cursor-pointer border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:border-gray-400 transition flex items-center justify-center gap-2">
                 Sell Your Device
                 <ArrowRight className="w-5 h-5" />
-              </button>
+              </Link>
             </div>
           </div>
 

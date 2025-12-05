@@ -95,7 +95,7 @@ export default function RootLayout({
       >
         <SessionProvider>
           <ConvexClientProvider>
-            <NextTopLoader />
+            <NextTopLoader showSpinner={false}/>
             
               {children}
                <Analytics />

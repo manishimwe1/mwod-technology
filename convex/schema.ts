@@ -75,6 +75,43 @@ export default defineSchema({
   })
     .index("by_category", ["category"])
     .index("by_status", ["status"]),
+  selledProducts: defineTable({
+    name: v.string(),
+    description: v.string(),
+    brand: v.string(),
+    category: v.string(),
+    price: v.number(),
+    stock: v.number(),
+    serialNumber: v.string(),
+    images: v.array(v.string()),
+    status: v.union(
+      v.literal("active"),
+      v.literal("inactive"),
+      v.literal("draft")
+    ),
+    updatedAt: v.string(),
+    condition: v.optional(
+      v.union(
+        v.literal("Like New"),
+        v.literal("New"),
+        v.literal("Good"),
+        v.literal("Used")
+      )
+    ),
+    badge: v.optional(
+      v.union(
+        v.literal("NEW"),
+        v.literal("HOT"),
+        v.literal("SALE"),
+        v.literal("Deals")
+      )
+    ),
+    views: v.optional(v.number()),
+    likes: v.optional(v.number()),
+    rating: v.optional(v.number()),
+  })
+    .index("by_category", ["category"])
+    .index("by_status", ["status"]),
 
   facture: defineTable({
     clientName: v.string(),

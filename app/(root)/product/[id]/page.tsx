@@ -37,6 +37,7 @@ import {
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import LeftProductDetailsImage from "@/components/LeftProductDetailsImage";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
@@ -111,7 +112,8 @@ const ProductDetailPage = () => {
           </motion.div>
 
           {/* Right Column: Product Details */}
-          <motion.div
+          <ScrollArea className="lg:sticky h-screen pb-10 border px-2">
+            <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -166,7 +168,7 @@ const ProductDetailPage = () => {
                 {product.originalPrice && (
                   <>
                     <span className="text-lg text-muted-foreground line-through decoration-destructive/50">
-                      {product.originalPrice.toLocaleString()}
+                      {product.originalPrice.toLocaleString()} Rwf
                     </span>
                     <Badge variant="destructive" className="ml-2">
                       -{discountPercent}% OFF
@@ -312,6 +314,8 @@ const ProductDetailPage = () => {
             </div>
 
           </motion.div>
+          </ScrollArea>
+          
         </div>
       </main>
     </div>

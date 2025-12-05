@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { ProformaInvoiceForm } from "./PoformaForm";
 import { FactureInvoiceForm } from "./FactureInvoiceForm";
+import SellForm from "@/components/SellForm";
 
 const AddNewItemBtn = ({ title }: { title: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,18 +24,9 @@ const AddNewItemBtn = ({ title }: { title: string }) => {
         <DialogHeader>
           <DialogTitle></DialogTitle>
         </DialogHeader>
-        {
-          title === 'Add Facture'&&(
-            
-            <FactureInvoiceForm onClose={setIsOpen} />
-          )
-        }
-        {
-          title === 'Add Poforma'&&(
-
-            <ProformaInvoiceForm onClose={setIsOpen} />
-          )
-        }
+        {title === "Add Facture" && <FactureInvoiceForm onClose={setIsOpen} />}
+        {title === "Add Poforma" && <ProformaInvoiceForm onClose={setIsOpen} />}
+        {title === "Add Selling Product" && <SellForm />}
       </DialogContent>
     </Dialog>
   );
