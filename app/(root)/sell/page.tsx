@@ -30,14 +30,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import SellForm from "@/components/SellForm";
 import OtherUserSelled from "@/components/OtherUserSelled";
 import AddNewItemBtn from "@/app/(dashboard)/_components/AddNewItemBtn";
 
 const SellPage = () => {
-    const selledProducts=null
+    const selledProducts= useQuery(api.selledProduct.getSelledProducts);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

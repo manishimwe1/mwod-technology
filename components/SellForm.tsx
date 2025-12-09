@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -116,81 +116,70 @@ const SellForm = () => {
     form.setValue("imageUrls", newImageNames);
   };
 
-    const createProduct = useMutation(api.selledProduct.createProduct);
-    const generateUploadUrl = useMutation(api.selledProduct.generateUploadUrl);
+  const createProduct = useMutation(api.selledProduct.createProduct);
+  const generateUploadUrl = useMutation(api.selledProduct.generateUploadUrl);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // try {
-
-    // if (uploadedFiles.length === 0) {
-    //       toast.error("Please upload at least one product image", {
-    //         richColors: true,
-    //       });
-    //       return;
-    //     }
-
-    const imageUrls: Id<"_storage">[] = [];
-
-    for (const file of uploadedFiles) {
-      try {
-        const uploadUrl = await generateUploadUrl();
-
-        const result = await fetch(uploadUrl, {
-          method: "POST",
-          headers: { "Content-Type": file.type },
-          body: file,
+    try {
+      if (uploadedFiles.length === 0) {
+        toast.error("Please upload at least one product image", {
+          richColors: true,
         });
-
-        if (!result.ok) {
-          console.error("Image upload failed:", await result.text());
-          continue;
-        }
-
-        const { storageId } = await result.json();
-        imageUrls.push(storageId);
-      } catch (err) {
-        console.error("Image upload failed for file:", file.name, err);
+        return;
       }
-    }
 
-    if (imageUrls.length === 0) {
-      toast.error("Failed to upload images", { richColors: true });
-      return;
+      const imageUrls: Id<"_storage">[] = [];
+
+      for (const file of uploadedFiles) {
+        try {
+          const uploadUrl = await generateUploadUrl();
+
+          const result = await fetch(uploadUrl, {
+            method: "POST",
+            headers: { "Content-Type": file.type },
+            body: file,
+          });
+
+          if (!result.ok) {
+            console.error("Image upload failed:", await result.text());
+            continue;
+          }
+
+          const { storageId } = await result.json();
+          imageUrls.push(storageId);
+        } catch (err) {
+          console.error("Image upload failed for file:", file.name, err);
+        }
+      }
+
+      if (imageUrls.length === 0) {
+        toast.error("Failed to upload images", { richColors: true });
+        return;
+      }
+      // 3. Save the storageId to the Convex database
+      await createProduct({
+        name: values.name,
+        description: values.description,
+        category: values.category,
+        price: values.price,
+        brand: values.brand,
+        stock: values.stock,
+        serialNumber: values.serialNumber,
+        condition: values.condition,
+        badge: values.badge,
+        images: imageUrls,
+        status: "draft",
+        updatedAt: new Date().toISOString(),
+        
+      });
+      form.reset();
+      setUploadedFiles([]);
+      setImagePreviews([]);
+      toast.success("Product submitted successfully!",{richColors:true});
+    } catch (error) {
+      console.error("Error submitting product:", error);
+      toast.error("Failed to submit product. Please try again.",{richColors:true});
     }
-    //   // 1. Get a short-lived upload URL
-    //   const postUrl = await generateUploadUrl();
-    //   // 2. POST the file to the URL
-    //   const images = form.getValues("imageUrls");
-    //   const storageIds = [];
-    //   for (const imageUrl of images) {
-    //     const response = await fetch(postUrl, {
-    //       method: "POST",
-    //       headers: { "Content-Type": imageUrl.split(";")[0].split(":")[1] }, // Assuming base64 data URI
-    //       body: await fetch(imageUrl).then(res => res.blob()),
-    //     });
-    //     const { storageId } = await response.json();
-    //     storageIds.push(storageId);
-    //   }
-    //   // 3. Save the storageId to the Convex database
-    //   await createProduct({
-    //     name: values.name,
-    //     description: values.description,
-    //     category: values.category,
-    //     price: values.price,
-    //     brand: values.brand,
-    //     stock: values.stock,
-    //     serialNumber: values.serialNumber,
-    //     condition: values.condition,
-    //     badge: values.badge,
-    //     images: storageIds,
-    //     status: "available", // Default status
-    //   });
-    //   form.reset();
-    //   alert("Product submitted successfully!");
-    // } catch (error) {
-    //   console.error("Error submitting product:", error);
-    //   alert("Failed to submit product. Please try again.");
-    // }
   };
   return (
     <ScrollArea className="h-[80vh] w-full max-w-4xl mx-auto p-6">

@@ -105,7 +105,7 @@ export const getAllProducts = query({
     return await ctx.db.query("selledProducts").order("desc").collect();
   },
 });
-export const getProductsWithImage = query({
+export const getSelledProducts = query({
   args: {},
   handler: async (ctx) => {
     const products = await ctx.db
