@@ -1,23 +1,9 @@
-// 'use client'
-
-// import CategoryGrid from "@/components/CategoryGrid";
-// import TrendingProducts from "@/components/TrendingProducts";
-
-// export default function Home() {
-
-//   return (
-//     <main className="min-h-screen bg-white">
-//       {/* <Hero /> */}
-//       {/* <FeaturedProducts products={[]} /> */}
-//       <CategoryGrid />
-//       <TrendingProducts />
-//     </main>
-//   );
-// }
 
 'use client'
 
+import Banner from '@/components/Banner';
 import HeroSection from '@/components/Hero';
+import Hero from '@/components/HeroCarrousel';
 import SocialProof from '@/components/SocialProof';
 import TrendingProducts from '@/components/TrendingProducts';
 import TrustBadges from '@/components/TrustBadges';
@@ -58,10 +44,11 @@ export default function EnhancedHomePage() {
       {/* SEO - Hidden H1 */}
       <h1 className="sr-only">ElectroX - Buy and Sell Electronics in Rwanda - Phones, Laptops & More</h1>
       {/* Hero Section */}
-      <HeroSection/>
+      <Hero/>
 
       {/* Trust Badges */}
       <div className='hidden md:block'>
+        <Banner/>
         <TrustBadges/>
       </div>
 

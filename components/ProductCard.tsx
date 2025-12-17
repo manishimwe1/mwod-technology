@@ -55,10 +55,10 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
     }
   };
 
-  const handleAddToCart = async (productId:Id<'products'>) => {
-   // Prevent event from bubbling up to the Link component
-   console.log('here',user);
-   
+  const handleAddToCart = async (productId: Id<"products">) => {
+    // Prevent event from bubbling up to the Link component
+    console.log("here", user);
+
     if (!user) {
       router.push("/login");
       return;
@@ -168,9 +168,9 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
       </div>
 
       {/* Info Section */}
-      <Link href={`/product/${product._id}`} className="p-5">
+      <Link href={`/product/${product._id}`} className="p-4">
         {/* Rating */}
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-2">
           <div className="flex">
             {[...Array(5)].map((_, i) => (
               <Star
@@ -187,12 +187,12 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
         </div>
 
         {/* Title */}
-        <h3 className="font-semibold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition min-h-[3rem]">
+        <h3 className="font-semibold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition min-h-[2.5rem]">
           {product.name}
         </h3>
 
         {/* Condition */}
-        <div className="mb-3">
+        <div className="mb-2">
           <span className="inline-flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded text-xs font-medium">
             <Award className="w-3 h-3" />
             {product.condition}
@@ -200,33 +200,31 @@ const ProductCard = ({ product }: { product: Doc<"products"> }) => {
         </div>
 
         {/* Price */}
-        <div className="flex items-start justify-end  h-12 gap-2 mb-4">
-          <span className="text-2xl font-bold text-gray-900 ">
+        <div className="flex items-end justify-between mb-2">
+          <span className="text-xl font-bold text-gray-900">
             {product.price.toLocaleString()}
             <span className="text-sm font-normal text-gray-600"> RWF</span>
           </span>
           {product.originalPrice && (
-            <span className=" items-end flex  h-full text-blue-400 line-through">
+            <span className="text-sm text-blue-400 line-through">
               {product.originalPrice.toLocaleString()} Rfw
             </span>
           )}
         </div>
 
         {product.originalPrice && (
-          <div className="bg-green-50 rounded-lg p-2 mb-4">
+          <div className="bg-green-50 rounded p-1.5 mb-2">
             <p className="text-xs text-green-800 text-center font-semibold">
               💰 Save {(product.originalPrice - product.price).toLocaleString()}{" "}
               RWF
             </p>
           </div>
         )}
-
-        {/* Actions */}
       </Link>
       <div className="flex gap-2">
         <button
           className="flex-1 bg-blue-600 cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 text-sm"
-          onClick={()=>handleAddToCart(product._id)}
+          onClick={() => handleAddToCart(product._id)}
         >
           <ShoppingCart className="w-4 h-4" />
           Add to Cart
